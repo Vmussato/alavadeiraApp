@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="alavadeira_blue">#bee3dc</color>
+    <color name="AlavadeiraTheme">#009788</color>
+    <color name="AlavadeiraThemePrimary">#008779</color>
+    <color name="TextLaranja">#ff7143</color>
+    <color name="ColorItensAlavadeira">#009688</color>
 </resources>
