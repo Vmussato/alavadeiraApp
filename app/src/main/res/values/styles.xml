@@ -8,10 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ThemaAlavadeira" parent="Theme.AppCompat.Light.DarkActionBar" >
+    <style name="ThemaAlavadeira" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/AlavadeiraTheme</item>
         <item name="colorPrimaryDark">@color/AlavadeiraThemePrimary</item>
         <item name="colorAccent">@color/ColorItensAlavadeira</item>
     </style>
+
+    <style name="ThemaAlavadeira.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ThemaAlavadeira.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="ThemaAlavadeira.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="alavadeiraapp.senai.com.alavadeiraapp.MainActivity"
+    tools:context="alavadeiraapp.com.example.maiconh.alavadeiraapp.MainActivity"
     android:background="@drawable/fundo_login">
 
     <FrameLayout

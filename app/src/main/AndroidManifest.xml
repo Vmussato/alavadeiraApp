@@ -5,30 +5,53 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-
         android:supportsRtl="true"
         android:theme="@style/ThemaAlavadeira">
+
+        <!-- Activity Login -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
+
+        <!-- Activity Notificaçoes -->
         <activity
             android:name=".NotificationsActivity"
-            android:label="Notificaçoes"
-            android:parentActivityName=".MainActivity">
-
+            android:label="@string/notificacoes"
+            android:parentActivityName=".EntregasActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="alavadeiraapp.com.example.maiconh.alavadeiraapp.MainActivity"/>
+                android:value="alavadeiraapp.com.example.maiconh.alavadeiraapp.EntregasActivity" />
+        </activity>
 
+        <!-- Activity Entregas -->
+        <activity
+            android:name=".EntregasActivity"
+            android:label="@string/entregas"
+            android:theme="@style/ThemaAlavadeira.NoActionBar" />
 
+        <!-- Activity AssinantesEndereco -->
+        <activity
+            android:name=".AssinantesEnderecoActivity"
+            android:label="@string/assinantesEnd"
+            android:parentActivityName=".EntregasActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="alavadeiraapp.com.example.maiconh.alavadeiraapp.EntregasActivity" />
+        </activity>
+
+        <!-- Activity Assinante -->
+        <activity
+            android:name=".AssinanteActivity"
+            android:parentActivityName=".AssinanteActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="alavadeiraapp.com.example.maiconh.alavadeiraapp.AssinanteActivity"/>
 
         </activity>
     </application>

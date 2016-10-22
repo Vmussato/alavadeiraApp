@@ -42,6 +42,7 @@ public class NotificationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
 
+        //Botao voltar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listaTarefas = (ListView) findViewById(R.id.listTarefasID);
