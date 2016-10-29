@@ -8,4 +8,5 @@
     <color name="AlavadeiraThemePrimary">#008779</color>
     <color name="TextLaranja">#ff7143</color>
     <color name="ColorItensAlavadeira">#009688</color>
+    <color name="CorEntregaAtiva">#f6f6f6</color>
 </resources>

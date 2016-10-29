@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,13 +33,15 @@ public class EntregasActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    ArrayList<Entregas> dataModels;
+    ListView listView;
+    private static AdapterEntrega adapter;
+
         private ListView listaConcluidos;
         private ListView listaPendentes;
         private Context context;
-        private String[] enderecosPendente = {"R. Castelhano, 60","Av Giovanni Gronchi,6675",
-                                        "AV GiovanniGronchi,6195","Av Brasi,160",
-                                        "R. 24 de Dezembro,10"};
-        private String[] enderecoConcluidos = {"R. Casatelhano, 60"};
+        private ImageView imgTempo;
+
 
 
     @Override
@@ -57,42 +61,46 @@ public class EntregasActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        listaPendentes = (ListView) findViewById(R.id.listaEntregasPendente);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, enderecosPendente) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-                text1.setTextColor(Color.BLACK);
-                text1.setText(enderecosPendente[position]);
-                text2.setTextColor(Color.GRAY);
-                text2.setText(enderecosPendente[position]);
-                return view;
-            }
-        };
+        listView=(ListView)findViewById(R.id.list);
 
-        listaPendentes.setAdapter(adapter);
 
-        listaPendentes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        dataModels= new ArrayList<>();
+
+        dataModels.add(new Entregas("R. Castelhano, 60", "12 MIN", "Edmilson Laranjo","Mayza Melo", "+ 2assinantes"));
+        dataModels.add(new Entregas("Av Giovanni Gronchi,6675", "", "Anderson Baungarter","Jose da Silva", ""));
+        dataModels.add(new Entregas("Av GiovanniGronchi,6195", "", "Maria Aparecida","Joao Nascimento", "+1 assinantes"));
+        dataModels.add(new Entregas("Av Brasi,160", "", "Joana Barbosa","Juliene Maria", "+4 assinantes"));
+        dataModels.add(new Entregas("R. 24 de Dezembro,10", "", "Miguel Santos","", ""));
+
+
+
+
+
+        adapter= new AdapterEntrega(dataModels,getApplicationContext());
+
+
+
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                int codPosicao = position;
-                String valorClicado = listaPendentes.getItemAtPosition(codPosicao).toString();
+                Entregas dataModel= dataModels.get(position);
+
+
 
                 Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
-                intent.putExtra("enderecoEntrega",valorClicado);
+                intent.putExtra("enderecoEntrega",dataModel.getEndereco());
 
                 startActivity(intent);
-
             }
         });
 
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
