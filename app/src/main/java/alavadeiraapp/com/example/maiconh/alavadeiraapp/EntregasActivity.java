@@ -1,9 +1,14 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,14 +18,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class EntregasActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-        private Button irNotificacoes;
-        private Button irAssinantesEndereco;
+        private ListView listaConcluidos;
+        private ListView listaPendentes;
+        private Context context;
+        private String[] enderecosPendente = {"R. Castelhano, 60","Av Giovanni Gronchi,6675",
+                                        "AV GiovanniGronchi,6195","Av Brasi,160",
+                                        "R. 24 de Dezembro,10"};
+        private String[] enderecoConcluidos = {"R. Casatelhano, 60"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,26 +57,48 @@ public class EntregasActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        listaPendentes = (ListView) findViewById(R.id.listaEntregasPendente);
 
-        //Botoes para chamar outras telas
-        irNotificacoes = (Button) findViewById(R.id.btnNotificacao);
-        irAssinantesEndereco = (Button) findViewById(R.id.btnAssinantes);
-
-        irNotificacoes.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, enderecosPendente) {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(EntregasActivity.this,NotificationsActivity.class));
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+                TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+                text1.setTextColor(Color.BLACK);
+                text1.setText(enderecosPendente[position]);
+                text2.setTextColor(Color.GRAY);
+                text2.setText(enderecosPendente[position]);
+                return view;
+            }
+        };
+
+        listaPendentes.setAdapter(adapter);
+
+        listaPendentes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                int codPosicao = position;
+                String valorClicado = listaPendentes.getItemAtPosition(codPosicao).toString();
+
+                Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
+                intent.putExtra("enderecoEntrega",valorClicado);
+
+                startActivity(intent);
+
             }
         });
 
-        irAssinantesEndereco.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(EntregasActivity.this,AssinantesEnderecoActivity.class));
-            }
-        });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.entregas,menu);
+        return true;
     }
 
     @Override
@@ -71,12 +111,6 @@ public class EntregasActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.entregas, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -86,8 +120,13 @@ public class EntregasActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+    /*
         if (id == R.id.action_settings) {
             return true;
+        }*/
+
+        if(id == R.id.notificacao){
+            startActivity(new Intent(EntregasActivity.this,NotificationsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

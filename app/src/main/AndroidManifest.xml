@@ -38,7 +38,7 @@
         <!-- Activity AssinantesEndereco -->
         <activity
             android:name=".AssinantesEnderecoActivity"
-            android:label="@string/assinantesEnd"
+
             android:parentActivityName=".EntregasActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

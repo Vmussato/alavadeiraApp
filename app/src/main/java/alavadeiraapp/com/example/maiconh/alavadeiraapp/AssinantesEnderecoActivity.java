@@ -5,11 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class AssinantesEnderecoActivity extends AppCompatActivity {
 
 
     private Button irAssinanteEntrega;
+    private String enderecoEntrega;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,5 +31,18 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
                 startActivity(new Intent(AssinantesEnderecoActivity.this,AssinanteActivity.class));
             }
         });
+
+
+
+        Bundle extra = getIntent().getExtras();
+
+        Intent intent = getIntent();
+        enderecoEntrega = extra.getString("enderecoEntrega");
+
+
+        setTitle(enderecoEntrega);
+
+
+
     }
 }

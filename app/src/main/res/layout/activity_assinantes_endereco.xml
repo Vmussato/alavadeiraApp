@@ -33,4 +33,5 @@
         android:layout_marginStart="23dp"
         android:layout_marginTop="13dp"
         android:id="@+id/btnEntregaAssinante" />
+
 </RelativeLayout>
