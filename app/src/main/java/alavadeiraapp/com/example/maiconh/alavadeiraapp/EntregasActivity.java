@@ -22,15 +22,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EntregasActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
+ /*
         private ListView listaConcluidos;
         private ListView listaPendentes;
         private Context context;
@@ -38,6 +43,14 @@ public class EntregasActivity extends AppCompatActivity
                                         "AV GiovanniGronchi,6195","Av Brasi,160",
                                         "R. 24 de Dezembro,10"};
         private String[] enderecoConcluidos = {"R. Casatelhano, 60"};
+
+*/
+
+
+    ExpandableListView expandableListView;
+    List<String> status;
+    Map<String, List<String>> entregas;
+    ExpandableListAdapter listAdapter;
 
 
     @Override
@@ -57,6 +70,14 @@ public class EntregasActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        expandableListView = (ExpandableListView) findViewById(R.id.idExpandableListView);
+        fillData();
+
+        listAdapter = new Entregas_Adpater(this,status,entregas);
+        expandableListView.setAdapter(listAdapter);
+
+        /*
         listaPendentes = (ListView) findViewById(R.id.listaEntregasPendente);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, enderecosPendente) {
@@ -91,7 +112,43 @@ public class EntregasActivity extends AppCompatActivity
         });
 
 
+        */
 
+
+
+    }
+
+    public void fillData(){
+        status = new ArrayList<>();
+        entregas = new HashMap<>();
+
+        status.add("PROXIMAS ENTREGAS");
+        status.add("CONCLUIDOS");
+
+
+        List<String> concluidos = new ArrayList<>();
+        List<String> pendentes = new ArrayList<>();
+
+        concluidos.add("Rua, Castelhano,68");
+
+        pendentes.add("Rua Castelhando,120");
+        pendentes.add("Av Geovanni Gronchi,6675");
+        pendentes.add("Av Geovanni Gronchi,6195");
+        pendentes.add("Av Brasil,160");
+        pendentes.add("Rua 24 de Dezembro,10");
+        pendentes.add("Rua Castelhando,120");
+        pendentes.add("Av Geovanni Gronchi,6675");
+        pendentes.add("Av Geovanni Gronchi,6195");
+        pendentes.add("Av Brasil,160");
+        pendentes.add("Rua 24 de Dezembro,10");
+        pendentes.add("Rua Castelhando,120");
+        pendentes.add("Av Geovanni Gronchi,6675");
+        pendentes.add("Av Geovanni Gronchi,6195");
+        pendentes.add("Av Brasil,160");
+        pendentes.add("Rua 24 de Dezembro,10");
+
+        entregas.put(status.get(0),pendentes);
+        entregas.put(status.get(1),concluidos);
     }
 
     @Override
