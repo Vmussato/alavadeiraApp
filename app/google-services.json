@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "838814040498",
+    "firebase_url": "https://alavadeiraapp.firebaseio.com",
+    "project_id": "alavadeiraapp",
+    "storage_bucket": "alavadeiraapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838814040498:android:3f70d69407dadc5f",
+        "android_client_info": {
+          "package_name": "alavadeiraapp.com.example.maiconh.alavadeiraapp.EntregasActivity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838814040498-8etaftqngi483vv5c4iluga4d1nn86mo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "alavadeiraapp.com.example.maiconh.alavadeiraapp.EntregasActivity",
+            "certificate_hash": "AD6A4B26AA4EC53A17B09473D71A7FAB52A0183A"
+          }
+        },
+        {
+          "client_id": "838814040498-e7rpmd3doi1ljark75i2h0hodu2h6idc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVXbuaADOehZRr_n_UnDDjNJeeBONNmyc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838814040498-e7rpmd3doi1ljark75i2h0hodu2h6idc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838814040498:android:7bca3ca58844243a",
+        "android_client_info": {
+          "package_name": "alavadeiraapp.com.example.maiconh.alavadeiraapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838814040498-lb20s3p02mnagruefir2v8sl089hdvl8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "alavadeiraapp.com.example.maiconh.alavadeiraapp",
+            "certificate_hash": "AD6A4B26AA4EC53A17B09473D71A7FAB52A0183A"
+          }
+        },
+        {
+          "client_id": "838814040498-e7rpmd3doi1ljark75i2h0hodu2h6idc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVXbuaADOehZRr_n_UnDDjNJeeBONNmyc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838814040498-e7rpmd3doi1ljark75i2h0hodu2h6idc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

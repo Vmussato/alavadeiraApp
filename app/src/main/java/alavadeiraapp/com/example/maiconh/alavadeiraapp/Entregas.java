@@ -1,47 +1,41 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
+import java.util.Objects;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Address;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Customer;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Deliverable;
+
 /**
  * Created by maiconh on 29/10/16.
  */
 
 public class Entregas {
 
-    String endereco;
-    String time;
-    String assinanteOne;
-    String assinanteTwo;
+    private Address andress;
+    private Customer customer;
+    private Deliverable deliverables;
 
-
-
-    String demaisAssinantes;
-
-    public Entregas(String endereco, String time, String assinanteOne, String assinanteTwo, String demaisAssinantes ) {
-        this.endereco=endereco;
-        this.time=time;
-        this.assinanteOne=assinanteOne;
-        this.assinanteTwo=assinanteTwo;
-        this.demaisAssinantes=demaisAssinantes;
-
+    public Address getAndress() {
+        return andress;
     }
 
-    public String getEndereco() {
-        return endereco;
+    public void setAndress(Address andress) {
+        this.andress = andress;
     }
 
-    public String getTime() {
-        return time;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public String getAssinanteOne() {
-        return assinanteOne;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public String getAssinanteTwo() {
-        return assinanteTwo;
+    public Deliverable getDeliverables() {
+        return deliverables;
     }
 
-    public String getDemaisAssinantes() {
-        return demaisAssinantes;
+    public void setDeliverables(Deliverable deliverables) {
+        this.deliverables = deliverables;
     }
-
 }

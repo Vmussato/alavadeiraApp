@@ -11,48 +11,17 @@
     tools:context="alavadeiraapp.com.example.maiconh.alavadeiraapp.EntregasActivity"
     tools:showIn="@layout/app_bar_entregas">
 
-    <TextView
-        android:text="PROXIMAS ENTREGAS"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:textSize="20dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:background="#e7e7e7"
-        android:padding="5dp"  />
 
-    <include layout="@layout/item_listview_entregas"
-
-        />
-<!--
-    <ListView
-        android:id="@+id/listaEntregasPendente"
+    <ExpandableListView
         android:layout_width="match_parent"
-        android:layout_height="269dp"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp" /> -->
+        android:layout_height="match_parent"
+        android:id="@+id/idExpandableListView"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:dividerHeight="0.3dp"
+        android:divider="#c5c5c5"
+        android:childDivider="#c5c5c5"
+  >
+    </ExpandableListView>
 
-    <TextView
-        android:text="CONCLUIDOS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"
-
-        android:textSize="20dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:id="@+id/textView3" />
-
-
-
-    <!--
-        <ListView
-            android:id="@+id/listaEntregasConcluidas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" /> -->
 </RelativeLayout>

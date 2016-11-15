@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,25 +24,59 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+
 import android.widget.ImageView;
+
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
+
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Address;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Customer;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Deliverable;
 
 public class EntregasActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    ArrayList<Entregas> dataModels;
-    ListView listView;
-    private static AdapterEntrega adapter;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("data").child("visits");
+
+
+ /*
 
         private ListView listaConcluidos;
         private ListView listaPendentes;
         private Context context;
         private ImageView imgTempo;
 
+
+*/
+
+
+    ExpandableListView expandableListView;
+    List<String> status;
+    Map<String, List<String>> entregas;
+    ExpandableListAdapter listAdapter;
 
 
     @Override
@@ -62,42 +97,155 @@ public class EntregasActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        listView=(ListView)findViewById(R.id.list);
 
+        expandableListView = (ExpandableListView) findViewById(R.id.idExpandableListView);
+        fillData();
 
-        dataModels= new ArrayList<>();
-
-        dataModels.add(new Entregas("R. Castelhano, 60", "12 MIN", "Edmilson Laranjo","Mayza Melo", "+ 2assinantes"));
-        dataModels.add(new Entregas("Av Giovanni Gronchi,6675", "", "Anderson Baungarter","Jose da Silva", ""));
-        dataModels.add(new Entregas("Av GiovanniGronchi,6195", "", "Maria Aparecida","Joao Nascimento", "+1 assinantes"));
-        dataModels.add(new Entregas("Av Brasi,160", "", "Joana Barbosa","Juliene Maria", "+4 assinantes"));
-        dataModels.add(new Entregas("R. 24 de Dezembro,10", "", "Miguel Santos","", ""));
+        listAdapter = new Entregas_Adpater(this,status,entregas);
+        expandableListView.setAdapter(listAdapter);
 
 
 
-
-
-        adapter= new AdapterEntrega(dataModels,getApplicationContext());
-
-
-
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        myRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                Entregas dataModel= dataModels.get(position);
+                //System.out.println(dataSnapshot.getKey().toString());
+                System.out.println(dataSnapshot.child("address").child("street").getValue());
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+            }
 
-                Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
-                intent.putExtra("enderecoEntrega",dataModel.getEndereco());
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                startActivity(intent);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
 
+        /*
+       myRef.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+               ArrayList<Entregas> entregas = new ArrayList<Entregas>();
+
+               for (DataSnapshot data: dataSnapshot.getChildren()){
+                   Entregas entrega = new Entregas();
+                   Address address = new Address();
+                   Customer customer = new Customer();
+                   Deliverable deliverable = new Deliverable();
+
+
+
+
+
+
+                   for (DataSnapshot addressVisits: data.getChildren()){
+
+                       //System.out.println(addressVisits.getValue());
+
+                       //System.out.println(addressVisits.child("street").getValue())
+                       //address.setNumber((Integer) addressVisits.child("number").getValue());
+                       address.setStreet((String) addressVisits.child("street").getValue());
+                       address.setState((String) addressVisits.child("state").getValue());
+                       address.setComplement((String) addressVisits.child("complement").getValue());
+                       address.setNeighborhood((String) addressVisits.child("neighborhood").getValue());
+                       address.setCity((String) addressVisits.child("city").getValue());
+                       address.setCep((String) addressVisits.child("cep").getValue());
+                       address.setLongitude((String) addressVisits.child("longitude").getValue());
+                       address.setLatitude((String) addressVisits.child("latitude").getValue());
+
+                       System.out.println(addressVisits.child("street").getValue());
+
+                   }
+
+                   /*for (DataSnapshot customerVisits: data.child("customer").getChildren()){
+
+
+
+                       customer.setId((Number) data.child("id").getValue());
+                       customer.setName((String) data.child("name").getValue());
+                       customer.setPhone((String) data.child("phone").getValue());
+                       customer.setNotes((String) data.child("notes").getValue());
+                   }
+
+                   for (DataSnapshot deliberableVisits: data.child("deliverables").getChildren()){
+
+
+
+                       deliverable.setBarcode((String) data.child("barcode").getValue());
+                       deliverable.setType((String) data.child("type").getValue());
+
+                   }
+
+                   entrega.setCustomer(customer);
+                   entrega.setAndress(address);
+                   entrega.setDeliverables(deliverable);
+
+                   entregas.add(entrega);
+
+
+
+               }
+
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });*/
+
+
+
+    }
+
+    public void fillData(){
+        status = new ArrayList<>();
+        entregas = new HashMap<>();
+
+        status.add("PROXIMAS ENTREGAS");
+        status.add("CONCLUIDOS");
+
+
+        List<String> concluidos = new ArrayList<>();
+        List<String> pendentes = new ArrayList<>();
+
+        concluidos.add("Rua, Castelhano,68");
+
+        pendentes.add("Rua Castelhando,120");
+        pendentes.add("Av Geovanni Gronchi,6675");
+        pendentes.add("Av Geovanni Gronchi,6195");
+        pendentes.add("Av Brasil,160");
+        pendentes.add("Rua 24 de Dezembro,10");
+        pendentes.add("Rua Castelhando,120");
+        pendentes.add("Av Geovanni Gronchi,6675");
+        pendentes.add("Av Geovanni Gronchi,6195");
+        pendentes.add("Av Brasil,160");
+        pendentes.add("Rua 24 de Dezembro,10");
+        pendentes.add("Rua Castelhando,120");
+        pendentes.add("Av Geovanni Gronchi,6675");
+        pendentes.add("Av Geovanni Gronchi,6195");
+        pendentes.add("Av Brasil,160");
+        pendentes.add("Rua 24 de Dezembro,10");
+
+        entregas.put(status.get(0),pendentes);
+        entregas.put(status.get(1),concluidos);
 
     }
 
