@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
 
-
-        logar = (Button) findViewById(R.id.botaoLogarId);
+        logar = (Button) findViewById(R.id.btnLogarId);
 
         logar.setOnClickListener(new View.OnClickListener() {
             @Override

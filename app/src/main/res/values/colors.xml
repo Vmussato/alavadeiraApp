@@ -9,4 +9,7 @@
     <color name="TextLaranja">#ff7143</color>
     <color name="ColorItensAlavadeira">#009688</color>
     <color name="CorEntregaAtiva">#f6f6f6</color>
+    <color name="TituloColetaEntrega">#d4d4d4</color>
+    <color name="corTextoItensAssinante">#303030</color>
+    <color name="backcolor">#F2EFDD</color>
 </resources>

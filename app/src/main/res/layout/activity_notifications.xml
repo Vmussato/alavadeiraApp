@@ -20,7 +20,7 @@
         android:text="Tarefas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
+        android:id="@+id/txtTempoEstimado"
         android:textSize="20sp"
         android:textColor="@color/TextLaranja"
         android:layout_marginBottom="15dp" />

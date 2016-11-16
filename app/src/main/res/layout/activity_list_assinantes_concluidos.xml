@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="EM FILA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtASsinantesConcluido"
+        android:textSize="@dimen/title_listView"
+        android:paddingLeft="30dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:background="@drawable/border_left"
+        android:textColor="#5c5c5c"
+        android:paddingRight="15dp"
+        android:drawableRight="@drawable/ic_assignment_turned_in_black_24dp"
+        android:drawablePadding="0dp"
+        />
+</LinearLayout>

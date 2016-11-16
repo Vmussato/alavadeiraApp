@@ -7,4 +7,11 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="title_listView">22dp</dimen>
+
+
+
+    <dimen name="LabelSpace">16dp</dimen>
+    <dimen name="botao_cabecalho_tamanho">145dp</dimen>
+    <dimen name="botao_altura_cabecalho">50dp</dimen>
+    <dimen name="titulo_lista">150dp</dimen>
 </resources>

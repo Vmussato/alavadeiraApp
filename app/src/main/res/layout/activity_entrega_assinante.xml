@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_entrega"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6F6F6"
+    tools:context="alavadeiraapp.com.example.maiconh.alavadeiraapp.AssinanteActivity"
+    android:name="teste"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@color/AlavadeiraTheme"
+        android:id="@+id/LayoutActionBar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+
+        <TextView
+            android:text="Complemento:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/LabelSpace"
+            android:layout_marginStart="21dp"
+            android:id="@+id/txtTempoEstimado"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Apartamento 12 A"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_below="@+id/txtTempoEstimado"
+            android:layout_alignLeft="@+id/txtTempoEstimado"
+            android:layout_alignStart="@+id/txtTempoEstimado"
+            android:textColor="@android:color/background_light" />
+
+        <TextView
+            android:text="Observação:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:layout_below="@+id/textView2"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignStart="@+id/textView2"
+            android:layout_alignRight="@+id/txtTempoEstimado"
+            android:layout_alignEnd="@+id/txtTempoEstimado" />
+
+        <TextView
+            android:text="Deixar as roupas no apartamento 12A"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtEndereco"
+            android:layout_below="@+id/textView3"
+            android:layout_alignLeft="@+id/textView3"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_width="350dp"
+            android:textColor="@android:color/background_light" />
+
+
+<!-- Botoes REAGENDAR E FINALIZAR -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_below="@+id/txtEndereco">
+
+            <Button
+                android:id ="@+id/btnReagendar"
+                android:text=" REAGENDAR"
+                android:layout_width="0.0dip" android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="8dp"
+                android:padding="5dp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/border_radius_buttons"
+                android:drawableLeft="@drawable/ic_error_outline_black_24dp"
+                android:textColor="@android:color/background_light"/>
+
+            <Button
+                android:id="@+id/btnFinalizar"
+                android:text=" Finalizar"
+                android:layout_width="0.0dip" android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="3dp"
+                android:padding="5dp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/border_radius_buttons"
+                android:drawableLeft="@drawable/ic_check_black_24dp"
+                android:textColor="@android:color/background_light" />
+        </LinearLayout>
+<!-- Botoes REAGENDAR E FINALIZAR -->
+
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:text="  ROUPAS ENTREGUES"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtTituloEntregues"
+        android:textColor="@android:color/background_dark"
+        android:background="@color/TituloColetaEntrega"
+        tools:textSize="20sp"
+        android:layout_marginTop="130dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:drawableLeft="@drawable/ic_brightness_1_black_24dp_itemlist_disabled"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp" />
+
+    <TextView
+        android:text="Sacolas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/txtSacola"
+        android:layout_marginLeft="116dp"
+        android:layout_marginStart="116dp"
+        android:layout_below="@+id/txtTituloEntregues"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/corTextoItensAssinante"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/txtSacola"
+        android:layout_toRightOf="@+id/txtSacola"
+        android:layout_toEndOf="@+id/txtSacola"
+        android:layout_marginLeft="49dp"
+        android:layout_marginStart="49dp"
+        android:id="@+id/txtQtdSacolas"
+        android:textColor="@android:color/background_dark"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="0/2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="18dp"
+        android:layout_marginEnd="18dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/rounder_zeroitem"
+        android:id="@+id/progress_sacolas"
+        android:layout_above="@+id/divisaoSacola"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/divisaoSacola"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtSacola"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#D4D4D4" />
+
+    <TextView
+        android:text="Cabides"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtCabide"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/txtSacola"
+        android:layout_alignLeft="@+id/txtSacola"
+        android:layout_alignStart="@+id/txtSacola"
+        android:textColor="@color/corTextoItensAssinante"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="x6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtCabide"
+        android:layout_alignRight="@+id/txtQtdSacolas"
+        android:layout_alignEnd="@+id/txtQtdSacolas"
+        android:id="@+id/txtQtdCabide"
+        android:textColor="@android:color/background_dark"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="4/6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textColor="#ffffff"
+        android:id="@+id/progress_cabide"
+
+        android:background="@drawable/rounder_itempendente"
+        android:layout_alignBaseline="@+id/txtQtdCabide"
+        android:layout_alignBottom="@+id/txtQtdCabide"
+        android:layout_alignRight="@+id/progress_sacolas"
+        android:layout_alignEnd="@+id/progress_sacolas"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/divisaoCabide"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtCabide"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#D4D4D4" />
+
+    <TextView
+        android:text="Outros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtOutros"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/txtCabide"
+        android:layout_alignLeft="@+id/txtCabide"
+        android:layout_alignStart="@+id/txtCabide"
+        android:textColor="@color/corTextoItensAssinante"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="x1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/txtOutros"
+        android:layout_alignLeft="@+id/txtQtdCabide"
+        android:layout_alignStart="@+id/txtQtdCabide"
+        android:id="@+id/txtQtdOutros"
+        android:textColor="@android:color/background_dark"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="1/1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textColor="#ffffff"
+        android:layout_alignTop="@+id/txtQtdOutros"
+        android:layout_alignRight="@+id/progress_cabide"
+        android:layout_alignEnd="@+id/progress_cabide"
+        android:id="@+id/progress_outros"
+        android:background="@drawable/rounder_itemconcluido"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/divisaoColetadas"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtSacolasColetadas"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#D4D4D4" />
+
+    <TextView
+        android:text="  ROUPAS COLETADAS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtTituloColetadas"
+        android:textColor="@android:color/background_dark"
+        android:background="@color/TituloColetaEntrega"
+        tools:textSize="20sp"
+        android:layout_marginTop="11dp"
+        android:drawableLeft="@drawable/ic_brightness_1_black_24dp_itemlist_disabled"
+        android:layout_below="@+id/txtQtdOutros"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="15dp" />
+
+    <TextView
+        android:text="Sacolas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTituloColetadas"
+        android:layout_alignLeft="@+id/txtOutros"
+        android:layout_alignStart="@+id/txtOutros"
+        android:layout_marginTop="12dp"
+        android:id="@+id/txtSacolasColetadas"
+        android:textColor="@color/corTextoItensAssinante"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/qtdItensColetado"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/rounder_coletada"
+        android:layout_above="@+id/divisaoColetadas"
+        android:layout_alignRight="@+id/progress_outros"
+        android:layout_alignEnd="@+id/progress_outros"
+        android:textSize="16sp" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/AlavadeiraThemePrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/LayoutButtonsQRCode">
+
+        <Button
+            android:text="ENTREGAR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:id="@+id/btnNavegar"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+
+            android:drawableLeft="@drawable/ic_blackberry_qr_code_variant"
+            />
+
+        <Button
+            android:text="COLETAR"
+            android:id="@+id/btnColetar"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btnNavegar"
+            android:layout_toEndOf="@+id/btnNavegar"
+            android:drawableLeft="@drawable/ic_blackberry_qr_code_variant"
+            />
+    </LinearLayout>
+</RelativeLayout>
+

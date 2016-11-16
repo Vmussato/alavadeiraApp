@@ -3,21 +3,29 @@
     package="alavadeiraapp.com.example.maiconh.alavadeiraapp">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/ThemaAlavadeira">
 
-        <!-- Activity Login -->
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!-- Activity Login -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+
         </activity>
 
         <!-- Activity Notificaçoes -->
@@ -39,7 +47,7 @@
         <!-- Activity AssinantesEndereco -->
         <activity
             android:name=".AssinantesEnderecoActivity"
-
+            android:label="@string/assinantesEnd"
             android:parentActivityName=".EntregasActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -49,10 +57,10 @@
         <!-- Activity Assinante -->
         <activity
             android:name=".AssinanteActivity"
-            android:parentActivityName=".AssinanteActivity">
+            android:parentActivityName=".AssinantesEnderecoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="alavadeiraapp.com.example.maiconh.alavadeiraapp.AssinanteActivity"/>
+                android:value="alavadeiraapp.com.example.maiconh.alavadeiraapp.AssinantesEnderecoActivity"/>
 
         </activity>
     </application>

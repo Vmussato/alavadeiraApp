@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="EM FILA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtAssinanteEmFila"
+        android:drawableRight="@drawable/ic_call_black_24dp_black"
+        android:textSize="@dimen/title_listView"
+        android:paddingLeft="30dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:background="#f6f6f6"
+        android:textColor="#333333"
+        android:paddingRight="15dp" />
+</LinearLayout>

@@ -1,21 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:background="@drawable/border_left_white"
+    android:padding="15dp"
+    android:id="@+id/EntregaFinalizada">
 
     <TextView
-        android:id="@+id/enderecoEntrega"
+        android:id="@+id/enderecoEntregaConcluido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text=""
+        android:text="Rua Castelhando,120"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black"
-        android:textSize="18dp"
+        android:textColor="#555555"
+        android:textSize="16dp"
         android:textStyle="normal|bold" />
-
 
     <TextView
         android:text="+2 assinantes"
@@ -26,58 +26,45 @@
         android:layout_alignBottom="@+id/assinanteOne"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="@android:color/black"
+        android:textColor="#555555"
         android:textSize="12sp"
         android:textStyle="normal|bold" />
 
     <TextView
-        android:id="@+id/assinanteOne"
+        android:id="@+id/assinanteOneConcluida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/enderecoEntrega"
+        android:layout_below="@+id/enderecoEntregaConcluido"
         android:layout_marginTop="5dp"
         android:text=""
         android:background="@drawable/rounded_corner"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@android:color/black"
+        android:textColor="#555555"
         android:textAlignment="center"
         android:paddingLeft="7dp"
         android:paddingRight="7dp"
         android:textSize="12sp"
         android:maxLength="13" />
-
-    <TextView
-        android:id="@+id/tempoChegada"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="12 MIN"
-        android:textAppearance="?android:attr/textAppearanceButton"
-        android:textColor="#009788"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
     <TextView
         android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/assinanteTwo"
+        android:id="@+id/assinanteTwoConcluidos"
         android:background="@drawable/rounded_corner"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="12sp"
         android:fontFamily="sans-serif-medium"
-        android:textColor="@android:color/black"
+        android:textColor="#555555"
         android:textAlignment="center"
         android:paddingLeft="7dp"
         android:paddingRight="7dp"
-        android:layout_alignBaseline="@+id/assinanteOne"
-        android:layout_alignBottom="@+id/assinanteOne"
-        android:layout_toRightOf="@+id/assinanteOne"
-        android:layout_toEndOf="@+id/assinanteOne"
+        android:layout_alignBaseline="@+id/assinanteOneConcluida"
+        android:layout_alignBottom="@+id/assinanteOneConcluida"
+        android:layout_toRightOf="@+id/assinanteOneConcluida"
+        android:layout_toEndOf="@+id/assinanteOneConcluida"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:maxLength="13" />
-
 
 </RelativeLayout>

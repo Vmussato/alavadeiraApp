@@ -1,6 +1,7 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,32 +14,32 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by maiconh on 11/11/16.
+ * Created by maiconh on 15/11/16.
  */
 
-public class Entregas_Adpater extends BaseExpandableListAdapter {
+public class Assinantes_Adapter extends BaseExpandableListAdapter {
 
     Activity context;
     List<String> status;
-    Map<String, List<String>> entregas;
+    Map<String, List<String>> assinantes;
 
 
-    public Entregas_Adpater(Activity context, List<String> status, Map<String, List<String>> entregas){
+    public Assinantes_Adapter(Activity context, List<String> status, Map<String, List<String>> assinantes){
 
         this.context = context;
         this.status = status;
-        this.entregas = entregas;
+        this.assinantes = assinantes;
     }
 
 
     @Override
     public int getGroupCount() {
-        return entregas.size();
+        return assinantes.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return entregas.get(status.get(groupPosition)).size();
+        return assinantes.get(status.get(groupPosition)).size();
     }
 
     @Override
@@ -48,7 +49,7 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return entregas.get(status.get(groupPosition)).get(childPosition);
+        return assinantes.get(status.get(groupPosition)).get(childPosition);
     }
 
     @Override
@@ -68,76 +69,57 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+
+
         String status = (String) getGroup(groupPosition);
 
         if (convertView == null){
             LayoutInflater inflater =(LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView  = inflater.inflate(R.layout.activity_title_entregas, null);
+            convertView  = inflater.inflate(R.layout.activity_title_assinante, null);
         }
-
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.txt_Title);
+        TextView txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
         txtTitle.setText(status);
-
-
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        String entregas = (String) getChild(groupPosition,childPosition);
+        String assinantes = (String) getChild(groupPosition,childPosition);
 
 
 
         LayoutInflater inflater = context.getLayoutInflater();
 
         Integer childType = new Integer(groupPosition);
-        System.out.println(childType);
 
-        if (convertView == null  || convertView.getTag() != childType)  {
+
+            if (convertView == null) {
             switch (childType) {
                 case 0:
-                    convertView = inflater.inflate(R.layout.activity_entregas_pendentes, null);
+                    convertView = inflater.inflate(R.layout.activity_list_assinantes, null);
                     convertView.setTag(childType);
                     break;
                 case 1:
-                    convertView = inflater.inflate(R.layout.activity_entregas_concluidas, null);
+                    convertView = inflater.inflate(R.layout.activity_list_assinantes_concluidos, null);
                     convertView.setTag(childType);
                     break;
+                }
             }
-        }
-
 
         // ESTA COM UM ERRO AO PUXAR A ABA !!!!
         // CORRIGIR
         switch (childType) {
             case 0:
-                TextView txtEndereco = (TextView) convertView.findViewById(R.id.enderecoEntregaConcluido);
-                txtEndereco.setText(entregas);
-
-                TextView txtAssinanante1 = (TextView) convertView.findViewById(R.id.assinanteOne);
-                txtAssinanante1.setText("Assinante1");
-
-                TextView txtAssinanante2 = (TextView) convertView.findViewById(R.id.assinanteTwo);
-                txtAssinanante2.setText("Assinante2");
+                TextView txtAssinanteEmFila = (TextView) convertView.findViewById(R.id.txtAssinanteEmFila);
+                txtAssinanteEmFila.setText(assinantes);
                 break;
             case 1:
-                TextView enderecoEntregaConcluido = (TextView) convertView.findViewById(R.id.enderecoEntregaConcluido);
-                enderecoEntregaConcluido.setText(entregas);
-                enderecoEntregaConcluido.setPaintFlags(enderecoEntregaConcluido.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-                TextView txtAssinanante1Concluido = (TextView) convertView.findViewById(R.id.assinanteOneConcluida);
-                txtAssinanante1Concluido.setText("Concluido1");
-
-                TextView txtAssinanante2Concluido = (TextView) convertView.findViewById(R.id.assinanteTwoConcluidos);
-                txtAssinanante2Concluido.setText("Concluido2");
-
+                TextView txtAssinanteConcluidos = (TextView) convertView.findViewById(R.id.txtASsinantesConcluido);
+                txtAssinanteConcluidos.setText(assinantes);
+                txtAssinanteConcluidos.setPaintFlags(txtAssinanteConcluidos.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 break;
-
-
         }
-
-
 
         return convertView;
     }

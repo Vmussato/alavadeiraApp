@@ -20,15 +20,48 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
-        <Button
-            android:text="ENTRAR"
-            android:layout_height="wrap_content"
-            android:id="@+id/botaoLogarId"
-            android:layout_marginTop="200dp"
-            android:layout_marginLeft="75dp"
-            android:background="#FD6F4A"
-            android:layout_width="190dp"
-            android:textColor="@android:color/background_light" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/txtLogin"
+                android:layout_marginTop="95dp"
+                android:hint="Seu nome"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/ic_assignment_ind_black_24dp"
+                android:textColor="?attr/colorPrimaryDark" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/txtSenha"
+                android:layout_marginTop="0dp"
+                android:hint="Sua senha"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/ic_lock_black_24dp"
+                android:textColor="?android:attr/colorPrimaryDark" />
+
+            <Button
+                android:text="ENTRAR"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnLogarId"
+                android:background="#FD6F4A"
+                android:layout_width="match_parent"
+                android:textColor="@android:color/background_light"
+
+                android:elevation="1dp"
+                android:layout_marginTop="20dp" />
+        </LinearLayout>
 
 
     </FrameLayout>
@@ -37,7 +70,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         app:srcCompat="@drawable/logo"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="70dp"
         android:id="@+id/imgLogo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

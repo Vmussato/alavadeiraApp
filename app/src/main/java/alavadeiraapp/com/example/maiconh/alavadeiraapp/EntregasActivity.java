@@ -32,6 +32,7 @@ import android.widget.ExpandableListView;
 
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +45,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,21 +64,12 @@ public class EntregasActivity extends AppCompatActivity
     DatabaseReference myRef = database.getReference("data").child("visits");
 
 
- /*
-
-        private ListView listaConcluidos;
-        private ListView listaPendentes;
-        private Context context;
-        private ImageView imgTempo;
-
-
-*/
-
 
     ExpandableListView expandableListView;
     List<String> status;
     Map<String, List<String>> entregas;
     ExpandableListAdapter listAdapter;
+    TextView teste;
 
 
     @Override
@@ -106,6 +99,27 @@ public class EntregasActivity extends AppCompatActivity
 
 
 
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+
+                //startActivity(intent);
+
+                Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
+
+                final String selected = (String) listAdapter.getChild(
+                        groupPosition, childPosition);
+                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
+                        .show();
+                intent.putExtra("endereco",selected);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+/*
+
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -134,6 +148,8 @@ public class EntregasActivity extends AppCompatActivity
 
             }
         });
+
+*/
 
 
         /*
@@ -169,15 +185,11 @@ public class EntregasActivity extends AppCompatActivity
                        address.setCep((String) addressVisits.child("cep").getValue());
                        address.setLongitude((String) addressVisits.child("longitude").getValue());
                        address.setLatitude((String) addressVisits.child("latitude").getValue());
-
                        System.out.println(addressVisits.child("street").getValue());
 
                    }
 
                    /*for (DataSnapshot customerVisits: data.child("customer").getChildren()){
-
-
-
                        customer.setId((Number) data.child("id").getValue());
                        customer.setName((String) data.child("name").getValue());
                        customer.setPhone((String) data.child("phone").getValue());
@@ -185,9 +197,6 @@ public class EntregasActivity extends AppCompatActivity
                    }
 
                    for (DataSnapshot deliberableVisits: data.child("deliverables").getChildren()){
-
-
-
                        deliverable.setBarcode((String) data.child("barcode").getValue());
                        deliverable.setType((String) data.child("type").getValue());
 
@@ -211,8 +220,6 @@ public class EntregasActivity extends AppCompatActivity
            }
        });*/
 
-
-
     }
 
     public void fillData(){
@@ -232,17 +239,7 @@ public class EntregasActivity extends AppCompatActivity
         pendentes.add("Av Geovanni Gronchi,6675");
         pendentes.add("Av Geovanni Gronchi,6195");
         pendentes.add("Av Brasil,160");
-        pendentes.add("Rua 24 de Dezembro,10");
-        pendentes.add("Rua Castelhando,120");
-        pendentes.add("Av Geovanni Gronchi,6675");
-        pendentes.add("Av Geovanni Gronchi,6195");
-        pendentes.add("Av Brasil,160");
-        pendentes.add("Rua 24 de Dezembro,10");
-        pendentes.add("Rua Castelhando,120");
-        pendentes.add("Av Geovanni Gronchi,6675");
-        pendentes.add("Av Geovanni Gronchi,6195");
-        pendentes.add("Av Brasil,160");
-        pendentes.add("Rua 24 de Dezembro,10");
+
 
         entregas.put(status.get(0),pendentes);
         entregas.put(status.get(1),concluidos);
@@ -294,18 +291,13 @@ public class EntregasActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.notifications_menu) {
+            startActivity(new Intent(EntregasActivity.this,NotificationsActivity.class));
+        } else if (id == R.id.retornar_base) {
 
-        } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.logout) {
+            startActivity(new Intent(EntregasActivity.this,MainActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
