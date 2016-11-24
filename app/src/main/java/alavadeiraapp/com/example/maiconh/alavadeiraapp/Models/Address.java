@@ -1,4 +1,4 @@
-package alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits;
+package alavadeiraapp.com.example.maiconh.alavadeiraapp.Models;
 
 /**
  * Created by maiconh on 12/11/16.
@@ -7,15 +7,23 @@ package alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits;
 public class Address {
     private String street;
     private Integer number;
-    private String complement;
     private String neighborhood;
-
-
     private String cep;
     private String city;
     private String state;
     private String latitude;
     private String longitude;
+    private Customer customer;
+    private boolean status;
+
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public String getStreet() {
         return street;
@@ -31,14 +39,6 @@ public class Address {
 
     public void setNumber(Integer number) {
         this.number = number;
-    }
-
-    public String getComplement() {
-        return complement;
-    }
-
-    public void setComplement(String complement) {
-        this.complement = complement;
     }
 
     public String getNeighborhood() {
@@ -87,5 +87,13 @@ public class Address {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

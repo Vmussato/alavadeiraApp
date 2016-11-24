@@ -1,4 +1,4 @@
-package alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits;
+package alavadeiraapp.com.example.maiconh.alavadeiraapp.Models;
 
 /**
  * Created by maiconh on 12/11/16.

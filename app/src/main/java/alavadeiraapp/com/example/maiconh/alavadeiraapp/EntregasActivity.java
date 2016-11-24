@@ -1,15 +1,9 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
-import android.content.Context;
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
@@ -21,17 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-
-import android.widget.ImageView;
 
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,24 +31,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Driver;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Tasks;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Trajectories;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Address;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Customer;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Deliverable;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Visits;
 
 public class EntregasActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -77,10 +57,11 @@ public class EntregasActivity extends AppCompatActivity
     Map<String, List<String>> entregas;
     ExpandableListAdapter listAdapter;
     TextView teste;
-
-    ArrayList<Customer> listaClientes = new ArrayList<Customer>();
-
-
+    List<String> concluidos = new ArrayList<>();
+    List<String> pendentes = new ArrayList<>();
+    ProgressBar progressBar;
+    TextView txtProgress;
+    Long qtdEntregas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +81,9 @@ public class EntregasActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar3);
+        txtProgress = (TextView) findViewById(R.id.progressoEntregas);
+
         /*
         Gravando um motorista no banco
 
@@ -108,7 +92,28 @@ public class EntregasActivity extends AppCompatActivity
         novoDriver.setValue(new Driver("Motorista","123","motorista@motorista.com","ABC-1313"));
         */
 
+        /*
+        Address address = new Address();
+        address.setCep("02139030");
+        address.setCity("Sao Paulo");
+        address.setLatitude("-43.4324329");
+        address.setLongitude("-26.213128");
+        address.setNeighborhood("Vila Sabrina");
+        address.setNumber(395);
+        address.setState("SP");
+        address.setStreet("Av Orlando Jardim");
+        address.setCustomer(null);
 
+
+     SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+
+        System.out.println("TESTE: " + sharedPreferences.getString("key","chave"));
+        DatabaseReference visitsRerefence = myRef.child("visits").child(sharedPreferences.getString("key","chave"));
+
+        DatabaseReference address1 = visitsRerefence.child("address").push();
+
+        address1.setValue(address);
+        */
 
 
 
@@ -150,21 +155,51 @@ public class EntregasActivity extends AppCompatActivity
 
             }
         });
+        SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+
+
+
+        Query enderecosQuery = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address");
+
+        enderecosQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    String street = (String) postSnapshot.child("street").getValue();
+                    boolean status = (boolean) postSnapshot.child("status").getValue();
+
+
+                    if (status == false){
+                        pendentes.add(street);
+                    }else{
+                        concluidos.add(street);
+                    }
+
+                }
+                AtualizaProgressBar();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         expandableListView = (ExpandableListView) findViewById(R.id.idExpandableListView);
         fillData();
-
         listAdapter = new Entregas_Adpater(this,status,entregas);
-        expandableListView.setAdapter(listAdapter);
+       expandableListView.setAdapter(listAdapter);
 
 
 
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+
+
+
+        // SELECIONA ITEM CLICADO E CHAMA TELA DE ASSINANTES DE ENDEREÇO
+      expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-
-                //startActivity(intent);
 
                 Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
 
@@ -177,9 +212,19 @@ public class EntregasActivity extends AppCompatActivity
                 return true;
             }
         });
+
+
+
     }
 
 
+    public void AtualizaProgressBar(){
+        Integer quantidadeEntregas = concluidos.size() + pendentes.size();
+        progressBar.setMax(quantidadeEntregas);
+        progressBar.setProgress(concluidos.size());
+
+        txtProgress.setText(concluidos.size()+ "/" + quantidadeEntregas );
+    }
 
     public void fillData(){
         status = new ArrayList<>();
@@ -190,11 +235,15 @@ public class EntregasActivity extends AppCompatActivity
 
 
 
-        List<String> concluidos = new ArrayList<>();
-        List<String> pendentes = new ArrayList<>();
 
-        concluidos.add("Rua, Castelhano,68");
-        pendentes.add("Rua, Castelhano,68");
+
+
+        //pendentes.add(endereco);
+
+
+
+        //concluidos.add("Rua, Castelhano,68");
+       // pendentes.add("Rua, Castelhano,68");
         entregas.put(status.get(0),pendentes);
         entregas.put(status.get(1),concluidos);
 
@@ -233,7 +282,10 @@ public class EntregasActivity extends AppCompatActivity
         }*/
 
         if(id == R.id.notificacao){
-            startActivity(new Intent(EntregasActivity.this,NotificationsActivity.class));
+            SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+            Intent intent = new Intent(EntregasActivity.this,NotificationsActivity.class);
+            intent.putExtra("key",sharedPreferences.getString("key","chave"));
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

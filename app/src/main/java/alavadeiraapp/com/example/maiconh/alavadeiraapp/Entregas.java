@@ -1,8 +1,7 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
-import java.util.Objects;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Address;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Customer;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Deliverable;
 
 /**
