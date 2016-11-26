@@ -17,6 +17,8 @@ public class Address {
     private boolean status;
 
 
+
+
     public boolean isStatus() {
         return status;
     }

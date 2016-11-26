@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Map;
 
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
+
 /**
  * Created by maiconh on 11/11/16.
  */
@@ -20,14 +22,15 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
 
     Activity context;
     List<String> status;
-    Map<String, List<String>> entregas;
+    Map<String, List<Address>> entregas;
 
 
-    public Entregas_Adpater(Activity context, List<String> status, Map<String, List<String>> entregas){
+    public Entregas_Adpater(Activity context, List<String> status, Map<String, List<Address>> entregas){
 
         this.context = context;
         this.status = status;
         this.entregas = entregas;
+
     }
 
 
@@ -116,7 +119,7 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
                 txtEndereco.setText(entregas);
 
                 TextView txtAssinanante1 = (TextView) convertView.findViewById(R.id.assinanteOne);
-                txtAssinanante1.setText("Assinante1");
+                txtAssinanante1.setText(entregas);
 
                 TextView txtAssinanante2 = (TextView) convertView.findViewById(R.id.assinanteTwo);
                 txtAssinanante2.setText("Assinante2");

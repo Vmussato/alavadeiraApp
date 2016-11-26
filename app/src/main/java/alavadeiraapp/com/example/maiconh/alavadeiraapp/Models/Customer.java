@@ -1,5 +1,7 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp.Models;
 
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Deliverable;
+
 /**
  * Created by maiconh on 12/11/16.
  */
@@ -9,7 +11,33 @@ public class Customer {
     private Number id;
     private String name;
     private String phone;
-    private String notes;
+    private String delivery_notes;
+    //private Deliverable deliverable;
+    private String complement;
+
+    public String getComplement() {
+        return complement;
+    }
+
+    public void setComplement(String complement) {
+        this.complement = complement;
+    }
+
+    public String getDelivery_notes() {
+        return delivery_notes;
+    }
+
+    public void setDelivery_notes(String delivery_notes) {
+        this.delivery_notes = delivery_notes;
+    }
+/*
+    public Deliverable getDeliverable() {
+        return deliverable;
+    }
+
+    public void setDeliverable(Deliverable deliverable) {
+        this.deliverable = deliverable;
+    }*/
 
     public Number getId() {
         return id;
@@ -35,11 +63,4 @@ public class Customer {
         this.phone = phone;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
 }

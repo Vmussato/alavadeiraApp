@@ -54,11 +54,11 @@ public class EntregasActivity extends AppCompatActivity
 
     ExpandableListView expandableListView;
     List<String> status;
-    Map<String, List<String>> entregas;
+    Map<String, List<Address>> entregas;
     ExpandableListAdapter listAdapter;
     TextView teste;
-    List<String> concluidos = new ArrayList<>();
-    List<String> pendentes = new ArrayList<>();
+    List<Address> concluidos = new ArrayList<>();
+    List<Address> pendentes = new ArrayList<>();
     ProgressBar progressBar;
     TextView txtProgress;
     Long qtdEntregas;
@@ -83,6 +83,25 @@ public class EntregasActivity extends AppCompatActivity
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar3);
         txtProgress = (TextView) findViewById(R.id.progressoEntregas);
+
+/*
+        SharedPreferences sharedPreferences1 = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+        DatabaseReference customerReference = myRef.child("visits").child(sharedPreferences1.getString("key","chave"));
+        DatabaseReference newCustomer = customerReference.child("address").child("-KXIRhaUlZ_M357FFwpK").child("customer").push();
+
+        Customer customer = new Customer();
+
+        customer.setId(125);
+        customer.setName("Cliente 3");
+        customer.setPhone("119453255");
+        customer.setDelivery_notes("avisa na recepçao");
+        customer.setComplement("Conj 3 - apt 4");
+        customer.setDeliverable(null);
+
+
+        newCustomer.setValue(customer);
+*/
+
 
         /*
         Gravando um motorista no banco
@@ -168,14 +187,28 @@ public class EntregasActivity extends AppCompatActivity
                     String street = (String) postSnapshot.child("street").getValue();
                     boolean status = (boolean) postSnapshot.child("status").getValue();
 
+                    DataSnapshot customerSnapshot = postSnapshot.child("customer");
 
-                    if (status == false){
-                        pendentes.add(street);
-                    }else{
-                        concluidos.add(street);
+                    for (DataSnapshot clientes : customerSnapshot.getChildren()){
+                        String cliName = (String) customerSnapshot.child("name").getValue();
+
+                        System.out.println("Cliente: -----> " + clientes.getRef());
                     }
 
+
+                    /*
+                    if (address.isStatus() == false){
+                        System.out.println("STATUS FALSe: " + address.getCustomer().getName().toString());
+
+                    }else{
+                        System.out.println("STATUS TRUe: " + address.getCustomer().getName().toString());
+                        //concluidos.add(address);
+                    }*/
+
                 }
+
+
+
                 AtualizaProgressBar();
             }
 
@@ -186,9 +219,11 @@ public class EntregasActivity extends AppCompatActivity
         });
 
         expandableListView = (ExpandableListView) findViewById(R.id.idExpandableListView);
-        fillData();
-        listAdapter = new Entregas_Adpater(this,status,entregas);
-       expandableListView.setAdapter(listAdapter);
+        //fillData();
+
+        //System.out.println("TESTANDO STATUS" + pendentes.get(0).isStatus());
+        //listAdapter = new Entregas_Adpater(this,status,entregas);
+       //expandableListView.setAdapter(listAdapter);
 
 
 
@@ -239,9 +274,6 @@ public class EntregasActivity extends AppCompatActivity
 
 
         //pendentes.add(endereco);
-
-
-
         //concluidos.add("Rua, Castelhano,68");
        // pendentes.add("Rua, Castelhano,68");
         entregas.put(status.get(0),pendentes);

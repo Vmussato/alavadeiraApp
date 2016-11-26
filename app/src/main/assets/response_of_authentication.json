@@ -1,0 +1,99 @@
+{
+
+"data": {
+    "driver_id": 5,
+    "scheduled_for": "2000-12-30",
+    "visits": [
+      {
+        "id": 1,
+        "trajectory": "A1",
+        "priority": 1,
+        "visited_at": "2000-12-30T09:45-03:00",
+        "address": {
+          "street": "Avenida Paulista",
+          "number": 575,
+          "complement": "Conjunto 1211",
+          "neighborhood": "Bela Vista",
+          "cep": "01311911",
+          "city": "São Paulo",
+          "state": "SP",
+          "latitude": "-23.568149",
+          "longitude": "-46.6492278"
+        },
+        "customer": {
+          "id": 123,
+          "name": "Cliente A",
+          "phone": "(00) 1234-5678",
+          "delivery_notes": "Informações importantes"
+        },
+        "deliverables": [
+          {
+            "barcode": "0000000001",
+            "type": "bag"
+          },
+          {
+            "barcode": "0000000010",
+            "type": "hanger"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "trajectory": "A2",
+        "priority": 1,
+        "visited_at": null,
+        "address": {
+          "street": "Avenida Paulista",
+          "number": 575,
+          "complement": "Conjunto 1711",
+          "neighborhood": "Bela Vista",
+          "cep": "01311911",
+          "city": "São Paulo",
+          "state": "SP"
+        },
+        "customer": {
+          "id": 321,
+          "name": "Cliente B",
+          "phone": "(00) 98765-4321",
+          "delivery_notes": "Informações importantes"
+        },
+        "deliverables": [
+          {
+            "barcode": "0000000100",
+            "type": "bag"
+          },
+          {
+            "barcode": "0000000101",
+            "type": "hanger"
+          },
+          {
+            "barcode": "0000000110",
+            "type": "bag"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "trajectory": "A2",
+        "priority": 2,
+        "visited_at": null,
+        "address": {
+          "street": "Rua Manuel da Nóbrega",
+          "number": 76,
+          "complement": "Conjunto 1711",
+          "neighborhood": "Paraíso",
+          "cep": "04001080",
+          "city": "São Paulo",
+          "state": "SP"
+        },
+        "customer": {
+          "id": 456,
+          "name": "Cliente C",
+          "phone": "(00) 4321-5678",
+          "delivery_notes": "Informações importantes"
+        },
+        "deliverables": []
+      }
+    ]
+  }
+}
