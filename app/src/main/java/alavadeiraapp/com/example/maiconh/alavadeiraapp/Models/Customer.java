@@ -8,42 +8,29 @@ import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Deliverable;
 
 public class Customer {
 
-    private Number id;
-    private String name;
-    private String phone;
-    private String delivery_notes;
+    public Long id;
+    public String name;
+    public String phone;
+    public String delivery_notes;
     //private Deliverable deliverable;
-    private String complement;
+    public String complement;
 
-    public String getComplement() {
-        return complement;
-    }
 
-    public void setComplement(String complement) {
+    public Customer(){}
+
+    public Customer(Long id, String name, String phone, String delivery_notes, String complement) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.delivery_notes = delivery_notes;
         this.complement = complement;
     }
-
-    public String getDelivery_notes() {
-        return delivery_notes;
-    }
-
-    public void setDelivery_notes(String delivery_notes) {
-        this.delivery_notes = delivery_notes;
-    }
-/*
-    public Deliverable getDeliverable() {
-        return deliverable;
-    }
-
-    public void setDeliverable(Deliverable deliverable) {
-        this.deliverable = deliverable;
-    }*/
 
     public Number getId() {
         return id;
     }
 
-    public void setId(Number id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -63,4 +50,19 @@ public class Customer {
         this.phone = phone;
     }
 
+    public String getDelivery_notes() {
+        return delivery_notes;
+    }
+
+    public void setDelivery_notes(String delivery_notes) {
+        this.delivery_notes = delivery_notes;
+    }
+
+    public String getComplement() {
+        return complement;
+    }
+
+    public void setComplement(String complement) {
+        this.complement = complement;
+    }
 }

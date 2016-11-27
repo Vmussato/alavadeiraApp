@@ -1,29 +1,36 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp.Models;
 
+import java.util.List;
+
 /**
  * Created by maiconh on 12/11/16.
  */
 
 public class Address {
     private String street;
-    private Integer number;
+    private Long number;
     private String neighborhood;
     private String cep;
     private String city;
     private String state;
     private String latitude;
     private String longitude;
-    private Customer customer;
+    private List<Customer> customer;
     private boolean status;
 
+    public Address(){}
 
 
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
+    public Address(String street, Long number, String neighborhood, String cep, String city, String state, String latitude, String longitude, List<Customer> customer, boolean status) {
+        this.street = street;
+        this.number = number;
+        this.neighborhood = neighborhood;
+        this.cep = cep;
+        this.city = city;
+        this.state = state;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.customer = customer;
         this.status = status;
     }
 
@@ -35,11 +42,11 @@ public class Address {
         this.street = street;
     }
 
-    public Integer getNumber() {
+    public Long getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(Long number) {
         this.number = number;
     }
 
@@ -91,11 +98,19 @@ public class Address {
         this.longitude = longitude;
     }
 
-    public Customer getCustomer() {
+    public List<Customer> getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(List<Customer> customer) {
         this.customer = customer;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

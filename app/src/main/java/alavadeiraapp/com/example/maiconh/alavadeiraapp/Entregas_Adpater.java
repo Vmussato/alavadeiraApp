@@ -7,12 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListAdapter;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Map;
 
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
 
 /**
  * Created by maiconh on 11/11/16.
@@ -23,6 +27,8 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
     Activity context;
     List<String> status;
     Map<String, List<Address>> entregas;
+    
+    
 
 
     public Entregas_Adpater(Activity context, List<String> status, Map<String, List<Address>> entregas){
@@ -33,7 +39,7 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
 
     }
 
-
+    
     @Override
     public int getGroupCount() {
         return entregas.size();
@@ -72,6 +78,8 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String status = (String) getGroup(groupPosition);
+        
+        
 
         if (convertView == null){
             LayoutInflater inflater =(LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
@@ -82,13 +90,16 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
         txtTitle.setText(status);
 
 
+
+
+
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        String entregas = (String) getChild(groupPosition,childPosition);
+        Address entregas = (Address) getChild(groupPosition,childPosition);
 
 
 
@@ -110,31 +121,80 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
             }
         }
 
+        Integer count = 0;
+        String customenOne = "";
+        String customerTwo = "";
+
+        for (Customer customer : entregas.getCustomer()){
+            Log.i("Clientes:", customer.getName());
+            count++;
+            if (count == 1 ){
+                customenOne = customer.getName().toString();
+            }else if (count == 2){
+                customerTwo = customer.getName().toString();
+            }
+
+        }
+
 
         // ESTA COM UM ERRO AO PUXAR A ABA !!!!
         // CORRIGIR
+
+
+
+
         switch (childType) {
             case 0:
-                TextView txtEndereco = (TextView) convertView.findViewById(R.id.enderecoEntregaConcluido);
-                txtEndereco.setText(entregas);
-
                 TextView txtAssinanante1 = (TextView) convertView.findViewById(R.id.assinanteOne);
-                txtAssinanante1.setText(entregas);
-
                 TextView txtAssinanante2 = (TextView) convertView.findViewById(R.id.assinanteTwo);
-                txtAssinanante2.setText("Assinante2");
+                TextView txtMaisAssinantes = (TextView) convertView.findViewById(R.id.maisAssinantes);
+                TextView tempoChegada = (TextView) convertView.findViewById(R.id.tempoChegada);
+                tempoChegada.setVisibility(View.INVISIBLE);
+
+
+                if (childPosition == 0){
+                    tempoChegada.setVisibility(View.VISIBLE);
+                }
+                txtMaisAssinantes.setVisibility(View.INVISIBLE);
+                TextView txtEndereco = (TextView) convertView.findViewById(R.id.enderecoEntregaConcluido);
+                txtEndereco.setText(entregas.getStreet() + "," + entregas.getNumber());
+                if (count == 1){
+                    txtAssinanante1.setText(customenOne);
+                    txtAssinanante2.setVisibility(View.INVISIBLE);
+
+                }else if (count >= 2){
+                    txtAssinanante1.setText(customenOne);
+                    txtAssinanante2.setText(customerTwo);
+                    if (count > 2){
+                        txtMaisAssinantes.setText("+"+String.valueOf(count - 2)+" assinantes");
+                        txtMaisAssinantes.setVisibility(View.VISIBLE);
+                    }
+                }
+
                 break;
             case 1:
+                TextView maisAssinantesConcluidos = (TextView) convertView.findViewById(R.id.maisAssinantesConcl);
+                TextView txtAssinanante1Concluido = (TextView) convertView.findViewById(R.id.assinanteOneConcluida);
+                TextView txtAssinanante2Concluido = (TextView) convertView.findViewById(R.id.assinanteTwoConcluidos);
+                maisAssinantesConcluidos.setVisibility(View.INVISIBLE);
+
+
                 TextView enderecoEntregaConcluido = (TextView) convertView.findViewById(R.id.enderecoEntregaConcluido);
-                enderecoEntregaConcluido.setText(entregas);
+                enderecoEntregaConcluido.setText(entregas.getStreet() + "," + entregas.getNumber());
                 enderecoEntregaConcluido.setPaintFlags(enderecoEntregaConcluido.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-                TextView txtAssinanante1Concluido = (TextView) convertView.findViewById(R.id.assinanteOneConcluida);
-                txtAssinanante1Concluido.setText("Concluido1");
+                if (count == 1){
 
-                TextView txtAssinanante2Concluido = (TextView) convertView.findViewById(R.id.assinanteTwoConcluidos);
+                txtAssinanante1Concluido.setText(customenOne);
+                    txtAssinanante2Concluido.setVisibility(View.INVISIBLE);
+                }else if (count >= 2){
+
                 txtAssinanante2Concluido.setText("Concluido2");
-
+                    if (count > 2){
+                        maisAssinantesConcluidos.setText("+"+String.valueOf(count - 2)+" assinantes");
+                        maisAssinantesConcluidos.setVisibility(View.VISIBLE);
+                    }
+                }
                 break;
 
 
@@ -144,6 +204,8 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
 
         return convertView;
     }
+
+
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {

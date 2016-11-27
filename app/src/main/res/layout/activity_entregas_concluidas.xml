@@ -21,7 +21,7 @@
         android:text="+2 assinantes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/maisAssinantes"
+        android:id="@+id/maisAssinantesConcl"
         android:layout_alignBaseline="@+id/assinanteOne"
         android:layout_alignBottom="@+id/assinanteOne"
         android:layout_alignParentRight="true"

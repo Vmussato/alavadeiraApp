@@ -20,8 +20,7 @@
         android:footerDividersEnabled="true"
         android:dividerHeight="0.3dp"
         android:divider="#c5c5c5"
-        android:childDivider="#c5c5c5"
-  >
+        android:childDivider="#c5c5c5">
     </ExpandableListView>
 
 </RelativeLayout>

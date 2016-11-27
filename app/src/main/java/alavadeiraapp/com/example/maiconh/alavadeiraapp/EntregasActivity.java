@@ -28,8 +28,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
+import org.codehaus.jackson.util.DefaultPrettyPrinter;
 
 import org.w3c.dom.Text;
 
@@ -37,6 +44,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
@@ -87,21 +96,22 @@ public class EntregasActivity extends AppCompatActivity
 /*
         SharedPreferences sharedPreferences1 = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
         DatabaseReference customerReference = myRef.child("visits").child(sharedPreferences1.getString("key","chave"));
-        DatabaseReference newCustomer = customerReference.child("address").child("-KXIRhaUlZ_M357FFwpK").child("customer").push();
+        DatabaseReference newCustomer = customerReference.child("address").child("-KXISSjp3FVNoAi97Z4a").child("customer").push();
 
         Customer customer = new Customer();
 
+
         customer.setId(125);
-        customer.setName("Cliente 3");
-        customer.setPhone("119453255");
-        customer.setDelivery_notes("avisa na recepçao");
-        customer.setComplement("Conj 3 - apt 4");
-        customer.setDeliverable(null);
+        customer.setName("Cliente 5");
+        customer.setPhone("21545121");
+        customer.setDelivery_notes("fdsfsfdsfs");
+        customer.setComplement("fdsfsfds");
+
 
 
         newCustomer.setValue(customer);
-*/
 
+*/
 
         /*
         Gravando um motorista no banco
@@ -180,54 +190,125 @@ public class EntregasActivity extends AppCompatActivity
 
         Query enderecosQuery = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address");
 
-        enderecosQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    String street = (String) postSnapshot.child("street").getValue();
-                    boolean status = (boolean) postSnapshot.child("status").getValue();
+       enderecosQuery.addChildEventListener(new ChildEventListener() {
+           @Override
+           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                    DataSnapshot customerSnapshot = postSnapshot.child("customer");
+               //Intancia para Classe Endereço e Cliente
+               Address address = new Address();
+               Customer customer = new Customer();
 
-                    for (DataSnapshot clientes : customerSnapshot.getChildren()){
-                        String cliName = (String) customerSnapshot.child("name").getValue();
+               // Crio um array de cliente pois 1 endereço pode ter varios clientes
+               List<Customer> arrayClientes = new ArrayList<Customer>();
 
-                        System.out.println("Cliente: -----> " + clientes.getRef());
-                    }
-
-
-                    /*
-                    if (address.isStatus() == false){
-                        System.out.println("STATUS FALSe: " + address.getCustomer().getName().toString());
-
-                    }else{
-                        System.out.println("STATUS TRUe: " + address.getCustomer().getName().toString());
-                        //concluidos.add(address);
-                    }*/
-
-                }
+               //Crio um map para pode pegar os valores do noh
+               Map<String, Object> newEndereco = (Map<String, Object>) dataSnapshot.getValue();
+               // Armazeno o nome da Rua na variavel
+               String rua = (String) newEndereco.get("street");
+               // Armazeno o numero da Rua na variavel
+               Long numero = (Long)  newEndereco.get("number");
+               // Armazeno o status para separar as entregas
 
 
 
-                AtualizaProgressBar();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+               //Faço um for dentro do objeto customer trazendo os filhos dele
+               for (DataSnapshot customers : dataSnapshot.child("customer").getChildren()){
+                   //Passo valor do objeto do firebase para objeto customer do java
+                   customer = customers.getValue(Customer.class);
+                   // Jogo dentro do array (pois pode ter varios clientes)
+                   arrayClientes.add(customer);
+               }
 
-            }
-        });
+               //Passo os valores para o objeto Address que sera utilizado para mostrar os valores
+               address.setStreet(rua);
+               address.setNumber(numero);
+               address.setStatus((Boolean) newEndereco.get("status"));
+               address.setCustomer(arrayClientes);
+
+
+               if (address.isStatus() == false){
+                   pendentes.add(address);
+
+               }else {
+
+                   concluidos.add(address);
+               }
+
+               AtualizaProgressBar();
+           }
+
+           @Override
+           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+               //Intancia para Classe Endereço e Cliente
+               Address address = new Address();
+               Customer customer = new Customer();
+
+               // Crio um array de cliente pois 1 endereço pode ter varios clientes
+               List<Customer> arrayClientes = new ArrayList<Customer>();
+
+               //Crio um map para pode pegar os valores do noh
+               Map<String, Object> newEndereco = (Map<String, Object>) dataSnapshot.getValue();
+               // Armazeno o nome da Rua na variavel
+               String rua = (String) newEndereco.get("street");
+               // Armazeno o numero da Rua na variavel
+               Long numero = (Long)  newEndereco.get("number");
+               // Armazeno o status para separar as entregas
+               boolean status = (boolean) newEndereco.get("status");
+
+               //Faço um for dentro do objeto customer trazendo os filhos dele
+               for (DataSnapshot customers : dataSnapshot.child("customer").getChildren()){
+                   //Passo valor do objeto do firebase para objeto customer do java
+                   customer = customers.getValue(Customer.class);
+                   // Jogo dentro do array (pois pode ter varios clientes)
+                   arrayClientes.add(customer);
+               }
+
+               //Passo os valores para o objeto Address que sera utilizado para mostrar os valores
+               address.setStreet(rua);
+               address.setNumber(numero);
+               address.setStatus(status);
+               address.setCustomer(arrayClientes);
+
+               //for (Customer addressList : arrayClientes){
+               //    System.out.println("Clientes do endereço "+ address.getStreet() + ": "+ addressList.getName());
+               // }
+
+
+               if (address.isStatus() == false){
+                   pendentes.add(address);
+
+               }else{
+
+                   concluidos.add(address);
+               }
+
+               AtualizaProgressBar();
+           }
+
+           @Override
+           public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+           }
+
+           @Override
+           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
+
+
+
 
         expandableListView = (ExpandableListView) findViewById(R.id.idExpandableListView);
-        //fillData();
-
-        //System.out.println("TESTANDO STATUS" + pendentes.get(0).isStatus());
-        //listAdapter = new Entregas_Adpater(this,status,entregas);
-       //expandableListView.setAdapter(listAdapter);
-
-
-
-
+        fillData();
+        listAdapter = new Entregas_Adpater(this,status,entregas);
+        expandableListView.setAdapter(listAdapter);
 
 
 
@@ -236,18 +317,16 @@ public class EntregasActivity extends AppCompatActivity
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
+                //Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
 
-                final String selected = (String) listAdapter.getChild(
-                        groupPosition, childPosition);
-                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
+                Address selected = (Address) listAdapter.getChild(groupPosition, childPosition);
+                Toast.makeText(getBaseContext(), selected.getStreet().toString(), Toast.LENGTH_LONG)
                         .show();
-                intent.putExtra("endereco",selected);
-                startActivity(intent);
+                //intent.putExtra("endereco",selected);
+                //startActivity(intent);
                 return true;
             }
         });
-
 
 
     }
@@ -268,14 +347,6 @@ public class EntregasActivity extends AppCompatActivity
         status.add("PROXIMAS ENTREGAS");
         status.add("CONCLUIDOS");
 
-
-
-
-
-
-        //pendentes.add(endereco);
-        //concluidos.add("Rua, Castelhano,68");
-       // pendentes.add("Rua, Castelhano,68");
         entregas.put(status.get(0),pendentes);
         entregas.put(status.get(1),concluidos);
 
