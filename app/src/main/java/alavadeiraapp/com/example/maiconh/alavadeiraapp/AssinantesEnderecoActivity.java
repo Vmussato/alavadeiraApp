@@ -3,6 +3,7 @@ package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,11 +24,21 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.app.ActionBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
 
 public class AssinantesEnderecoActivity extends AppCompatActivity {
 
@@ -35,15 +46,21 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
     private Button irAssinanteEntrega;
     private Button abrirMapa;
     private String enderecoEntrega;
-
-
     private TextView textoEndereco;
+    private static final String ARQUIVO_PREFERENCIA = "ArquivoPreferencia";
 
 
     ExpandableListView expandableListView;
     List<String> status;
     Map<String, List<String>> assinantes;
     ExpandableListAdapter listAdapter;
+    List<String> concluidos = new ArrayList<>();
+    List<String> pendentes = new ArrayList<>();
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +73,49 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
 
 
         textoEndereco = (TextView) findViewById(R.id.txtEndereco);
-        Bundle extra = getIntent().getExtras();
+        Intent intent = getIntent();
+        String rua = intent.getStringExtra("rua");
+        String numero = intent.getStringExtra("numero");
+        String key = intent.getStringExtra("key");
+        textoEndereco.setText(rua + ", "+ numero);
 
-        if (extra != null ){
-        String textoPassado = extra.getString("endereco");
-        textoEndereco.setText(textoPassado);
-        }else{
 
-        }
+        SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+
+
+        System.out.println("CHAVE: " + key);
+
+        Query enderecosQuery = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(key).child("customer");
+
+        enderecosQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                System.out.println(dataSnapshot);
+                String nome = (String) dataSnapshot.child("name").getValue();
+                pendentes.add(nome);
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         expandableListView = (ExpandableListView) findViewById(R.id.idExpandableAssinantes);
@@ -122,14 +174,13 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
         status.add("CONCLUIDOS");
 
 
-        List<String> concluidos = new ArrayList<>();
-        List<String> pendentes = new ArrayList<>();
 
-        concluidos.add("Mayza Melo");
-        concluidos.add("Anderson Baugarter");
 
-        pendentes.add("Edmilson Laranjo");
-        pendentes.add("Luiz Gonçalves");
+        //concluidos.add("Mayza Melo");
+        //concluidos.add("Anderson Baugarter");
+
+        //pendentes.add("Edmilson Laranjo");
+        //pendentes.add("Luiz Gonçalves");
 
 
         assinantes.put(status.get(0),pendentes);

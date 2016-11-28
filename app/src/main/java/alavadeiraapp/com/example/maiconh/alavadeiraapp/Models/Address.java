@@ -17,11 +17,12 @@ public class Address {
     private String longitude;
     private List<Customer> customer;
     private boolean status;
+    private String key;
 
     public Address(){}
 
 
-    public Address(String street, Long number, String neighborhood, String cep, String city, String state, String latitude, String longitude, List<Customer> customer, boolean status) {
+    public Address(String street, Long number, String neighborhood, String cep, String city, String state, String latitude, String longitude, List<Customer> customer, boolean status, String key) {
         this.street = street;
         this.number = number;
         this.neighborhood = neighborhood;
@@ -32,6 +33,15 @@ public class Address {
         this.longitude = longitude;
         this.customer = customer;
         this.status = status;
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getStreet() {

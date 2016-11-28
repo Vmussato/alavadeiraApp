@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ import org.codehaus.jackson.util.DefaultPrettyPrinter;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +70,8 @@ public class EntregasActivity extends AppCompatActivity
     TextView teste;
     List<Address> concluidos = new ArrayList<>();
     List<Address> pendentes = new ArrayList<>();
+    List<String> chaveEndereco = new ArrayList<>();
+
     ProgressBar progressBar;
     TextView txtProgress;
     Long qtdEntregas;
@@ -194,6 +198,8 @@ public class EntregasActivity extends AppCompatActivity
            @Override
            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
+
+
                //Intancia para Classe Endereço e Cliente
                Address address = new Address();
                Customer customer = new Customer();
@@ -226,6 +232,7 @@ public class EntregasActivity extends AppCompatActivity
                address.setStatus((Boolean) newEndereco.get("status"));
                address.setCustomer(arrayClientes);
 
+               address.setKey(dataSnapshot.getKey());
 
                if (address.isStatus() == false){
                    pendentes.add(address);
@@ -236,6 +243,8 @@ public class EntregasActivity extends AppCompatActivity
                }
 
                AtualizaProgressBar();
+
+
            }
 
            @Override
@@ -317,13 +326,20 @@ public class EntregasActivity extends AppCompatActivity
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                //Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
+                Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
 
                 Address selected = (Address) listAdapter.getChild(groupPosition, childPosition);
                 Toast.makeText(getBaseContext(), selected.getStreet().toString(), Toast.LENGTH_LONG)
                         .show();
-                //intent.putExtra("endereco",selected);
-                //startActivity(intent);
+
+
+
+                intent.putExtra("rua", selected.getStreet());
+                intent.putExtra("numero", selected.getNumber().toString());
+
+                    intent.putExtra("key", selected.getKey());
+
+                startActivity(intent);
                 return true;
             }
         });
