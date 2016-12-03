@@ -51,6 +51,7 @@ import java.util.Map;
 
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Deliverables;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Visits;
 
 public class EntregasActivity extends AppCompatActivity
@@ -97,6 +98,21 @@ public class EntregasActivity extends AppCompatActivity
         progressBar = (ProgressBar) findViewById(R.id.progressBar3);
         txtProgress = (TextView) findViewById(R.id.progressoEntregas);
 
+
+        /*
+        SharedPreferences sharedPreferences1 = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+        DatabaseReference customerReference = myRef.child("visits").child(sharedPreferences1.getString("key","chave"));
+        DatabaseReference newDeliverables = customerReference.child("address").child("-KXIRhaUlZ_M357FFwpK").child("customer").child("-KXVghriCxjpDVjIzAuG").child("deliverables").push();
+
+
+        Deliverables deliverables = new Deliverables();
+
+        deliverables.setType("other");
+        deliverables.setBarcode("0000000003");
+        deliverables.setStatus(false);
+
+
+        newDeliverables.setValue(deliverables);*/
 /*
         SharedPreferences sharedPreferences1 = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
         DatabaseReference customerReference = myRef.child("visits").child(sharedPreferences1.getString("key","chave"));

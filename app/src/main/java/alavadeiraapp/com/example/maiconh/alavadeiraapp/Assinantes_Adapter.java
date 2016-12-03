@@ -1,14 +1,23 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
@@ -94,6 +103,7 @@ public class Assinantes_Adapter extends BaseExpandableListAdapter {
         Integer childType = new Integer(groupPosition);
 
 
+
             if (convertView == null) {
             switch (childType) {
                 case 0:
@@ -113,6 +123,8 @@ public class Assinantes_Adapter extends BaseExpandableListAdapter {
             case 0:
                 TextView txtAssinanteEmFila = (TextView) convertView.findViewById(R.id.txtAssinanteEmFila);
                 txtAssinanteEmFila.setText(assinantes);
+
+
                 break;
             case 1:
                 TextView txtAssinanteConcluidos = (TextView) convertView.findViewById(R.id.txtASsinantesConcluido);
@@ -124,8 +136,13 @@ public class Assinantes_Adapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+
+
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+
+
 }

@@ -1,16 +1,22 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
+import android.*;
+import android.Manifest;
 import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Color;
@@ -48,8 +54,7 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
     private String enderecoEntrega;
     private TextView textoEndereco;
     private static final String ARQUIVO_PREFERENCIA = "ArquivoPreferencia";
-
-
+    private ImageView ligar;
     ExpandableListView expandableListView;
     List<String> status;
     Map<String, List<String>> assinantes;
@@ -59,6 +64,8 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
+
+
 
 
 
@@ -78,6 +85,10 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
         String numero = intent.getStringExtra("numero");
         String key = intent.getStringExtra("key");
         textoEndereco.setText(rua + ", "+ numero);
+
+
+
+
 
 
         SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
@@ -129,6 +140,7 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
+
                 Intent intent = new Intent(AssinantesEnderecoActivity.this, AssinanteActivity.class);
 
                 final String selected = (String) listAdapter.getChild(
@@ -142,6 +154,7 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
         });
 
     }
+
 
 
 
