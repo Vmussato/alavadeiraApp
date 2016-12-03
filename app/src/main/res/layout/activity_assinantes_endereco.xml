@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:id="@+id/btnNavegar"
+            android:id="@+id/btnEntregar"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -123,8 +123,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.17"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/btnNavegar"
-            android:layout_toEndOf="@+id/btnNavegar"
+            android:layout_toRightOf="@+id/btnEntregar"
+            android:layout_toEndOf="@+id/btnEntregar"
             android:drawableLeft="@drawable/ic_check_circle_black_24dp"
             android:textSize="12sp" />
     </LinearLayout>

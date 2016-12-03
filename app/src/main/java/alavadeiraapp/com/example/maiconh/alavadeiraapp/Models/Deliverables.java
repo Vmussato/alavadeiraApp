@@ -11,6 +11,7 @@ public class Deliverables {
     private String type;
     private String barcode;
     private boolean status;
+    private String key;
 
     public Deliverables(){}
 

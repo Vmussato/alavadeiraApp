@@ -52,18 +52,8 @@
             android:layout_alignRight="@+id/txtTempoEstimado"
             android:layout_alignEnd="@+id/txtTempoEstimado" />
 
-        <TextView
-            android:text="Deixar as roupas no apartamento 12A"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtEndereco"
-            android:layout_below="@+id/textView3"
-            android:layout_alignLeft="@+id/textView3"
-            android:layout_alignStart="@+id/textView3"
-            android:layout_width="350dp"
-            android:textColor="@android:color/background_light" />
 
-
-<!-- Botoes REAGENDAR E FINALIZAR -->
+        <!-- Botoes REAGENDAR E FINALIZAR -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
@@ -99,7 +89,17 @@
                 android:drawableLeft="@drawable/ic_check_black_24dp"
                 android:textColor="@android:color/background_light" />
         </LinearLayout>
-<!-- Botoes REAGENDAR E FINALIZAR -->
+
+        <TextView
+            android:text="Deixar as roupas no apartamento 12A"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtEndereco"
+            android:layout_width="350dp"
+            android:textColor="@android:color/background_light"
+            android:layout_below="@+id/textView3"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        <!-- Botoes REAGENDAR E FINALIZAR -->
 
 
 
@@ -138,7 +138,7 @@
         android:textSize="16sp" />
 
     <TextView
-        android:text="x2"
+        android:text="x"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtSacola"
@@ -146,7 +146,7 @@
         android:layout_toEndOf="@+id/txtSacola"
         android:layout_marginLeft="49dp"
         android:layout_marginStart="49dp"
-        android:id="@+id/txtQtdSacolas"
+        android:id="@+id/X1"
         android:textColor="@android:color/background_dark"
         android:textSize="16sp" />
 
@@ -188,18 +188,17 @@
         android:textSize="16sp" />
 
     <TextView
-        android:text="x6"
+        android:text="x"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/txtCabide"
-        android:layout_alignRight="@+id/txtQtdSacolas"
-        android:layout_alignEnd="@+id/txtQtdSacolas"
-        android:id="@+id/txtQtdCabide"
+        android:layout_alignRight="@+id/X1"
+        android:layout_alignEnd="@+id/X1"
+        android:id="@+id/X"
         android:textColor="@android:color/background_dark"
         android:textSize="16sp" />
 
     <TextView
-        android:text="4/6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
@@ -208,8 +207,8 @@
         android:id="@+id/progress_cabide"
 
         android:background="@drawable/rounder_itempendente"
-        android:layout_alignBaseline="@+id/txtQtdCabide"
-        android:layout_alignBottom="@+id/txtQtdCabide"
+        android:layout_alignBaseline="@+id/X"
+        android:layout_alignBottom="@+id/X"
         android:layout_alignRight="@+id/progress_sacolas"
         android:layout_alignEnd="@+id/progress_sacolas"
         android:textSize="16sp" />
@@ -237,24 +236,23 @@
         android:textSize="16sp" />
 
     <TextView
-        android:text="x1"
+        android:text="x"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtOutros"
-        android:layout_alignLeft="@+id/txtQtdCabide"
-        android:layout_alignStart="@+id/txtQtdCabide"
-        android:id="@+id/txtQtdOutros"
+        android:layout_alignLeft="@+id/X"
+        android:layout_alignStart="@+id/X"
+        android:id="@+id/X2"
         android:textColor="@android:color/background_dark"
         android:textSize="16sp" />
 
     <TextView
-        android:text="1/1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:textColor="#ffffff"
-        android:layout_alignTop="@+id/txtQtdOutros"
+        android:layout_alignTop="@+id/X2"
         android:layout_alignRight="@+id/progress_cabide"
         android:layout_alignEnd="@+id/progress_cabide"
         android:id="@+id/progress_outros"
@@ -281,7 +279,7 @@
         tools:textSize="20sp"
         android:layout_marginTop="11dp"
         android:drawableLeft="@drawable/ic_brightness_1_black_24dp_itemlist_disabled"
-        android:layout_below="@+id/txtQtdOutros"
+        android:layout_below="@+id/X2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
@@ -303,7 +301,7 @@
         android:textSize="16sp" />
 
     <TextView
-        android:text="2"
+        android:text="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/qtdItensColetado"
@@ -334,7 +332,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:id="@+id/btnNavegar"
+            android:id="@+id/btnEntregar"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -350,10 +348,48 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/btnNavegar"
-            android:layout_toEndOf="@+id/btnNavegar"
+            android:layout_toRightOf="@+id/btnEntregar"
+            android:layout_toEndOf="@+id/btnEntregar"
             android:drawableLeft="@drawable/ic_blackberry_qr_code_variant"
             />
     </LinearLayout>
+
+    <TextView
+        android:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtQuantidadeSacolas"
+        android:textSize="18sp"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/background_dark"
+        android:layout_alignBaseline="@+id/X1"
+        android:layout_alignBottom="@+id/X1"
+        android:layout_toRightOf="@+id/X1"
+        android:layout_toEndOf="@+id/X1" />
+
+    <TextView
+        android:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/X"
+        android:layout_toRightOf="@+id/X"
+        android:layout_toEndOf="@+id/X"
+        android:id="@+id/txtQuantidadeCabides"
+        android:textSize="18sp"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/background_dark" />
+
+    <TextView
+        android:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtQuantidadeOutros"
+        android:textSize="18sp"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/background_dark"
+        android:layout_alignBaseline="@+id/X2"
+        android:layout_alignBottom="@+id/X2"
+        android:layout_toRightOf="@+id/X2"
+        android:layout_toEndOf="@+id/X2" />
 </RelativeLayout>
 
