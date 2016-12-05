@@ -57,7 +57,7 @@
 
         <TextView
             android:layout_height="wrap_content"
-            android:id="@+id/txtEndereco"
+            android:id="@+id/txtObservacao"
             android:layout_width="match_parent"
             android:textColor="@android:color/background_light"
             android:textSize="24sp"

@@ -1,12 +1,19 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
+import android.*;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Deliverables;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Visits.Deliverable;
 
@@ -41,8 +50,13 @@ public class AssinanteActivity extends AppCompatActivity {
     private TextView txtQuantidadeCabides;
     private TextView txtQuantidadeOutros;
     private TextView txtQuantidadeColetada;
-    List<Deliverables> itensEntrega = new ArrayList<>();
+    private TextView btnFinalizar;
 
+    private TextView txtComplemento;
+    private TextView txtObsevacao;
+
+    List<Deliverables> itensEntrega = new ArrayList<>();
+    private String txtTelefone;
     private int totalSacolas;
     private int totalCabides ;
     private int totalOutros;
@@ -74,13 +88,22 @@ public class AssinanteActivity extends AppCompatActivity {
 
 
 
-        Bundle extra = getIntent().getExtras();
-        if (extra != null ){
-            String textoPassado = extra.getString("assinante");
-            setTitle(textoPassado);
-        }else{
+        Intent i = getIntent();
+        final Customer customer = (Customer) i.getSerializableExtra("objeto");
+         String keyAddress = i.getStringExtra("keyAddress");
 
-        }
+
+
+        txtComplemento = (TextView) findViewById(R.id.txtComplemento);
+        txtObsevacao = (TextView) findViewById(R.id.txtObservacao);
+
+        txtComplemento.setText(customer.getComplement());
+        txtObsevacao.setText(customer.getDelivery_notes());
+        setTitle(customer.getName());
+
+        txtTelefone = customer.getPhone();
+
+
 
 
         txtCabides = (TextView) findViewById(R.id.progress_cabide);
@@ -92,10 +115,59 @@ public class AssinanteActivity extends AppCompatActivity {
         txtQuantidadeOutros = (TextView) findViewById(R.id.txtQuantidadeOutros);
         txtQuantidadeColetada = (TextView) findViewById(R.id.qtdItensColetado);
 
+
+        btnFinalizar = (Button) findViewById(R.id.btnFinalizar);
+
+        btnFinalizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Valida se todos os itens foram coletados, caso sim pergunta se motorisca que finalizar a entrega
+                if ((totalCabides == totalCabidesLidos) && (totalSacolas == totalSacolasLidas) && (totalOutros == totalOutrosLidos)){
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AssinanteActivity.this);
+                    builder.setTitle("Finalizar entrega?");
+                    builder.setMessage("Ao clicar em sim a entrega sera finalizada.");
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //TODO
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                }else{ // Em casos que nao forem coletados todos os itens sera apresentado um informativo e caso cliente confirmar sera finalizado mesmo assim
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AssinanteActivity.this);
+                    builder.setTitle("Tem certeza que deseja finalizar?");
+                    builder.setMessage("ATENÇAO! Nao foram entregues todos os itens do cliente, ao clicar em 'OK' sera finalizado a entrega com itens faltantes, tem certeza que deseja finalizar?");
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //TODO
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+        });
+
         SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
 
-        final Query itens = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child("-KXIRhaUlZ_M357FFwpK").child("customer").child("-KXVghriCxjpDVjIzAuG").child("deliverables");
-        final Query itenColetados = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child("-KXIRhaUlZ_M357FFwpK").child("customer").child("-KXVghriCxjpDVjIzAuG").child("colectables");
+        final Query itens = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(keyAddress).child("customer").child(customer.getKey()).child("deliverables");
+        final Query itenColetados = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(keyAddress).child("customer").child(customer.getKey()).child("colectables");
 
        itenColetados.addChildEventListener(new ChildEventListener() {
            @Override
@@ -397,9 +469,6 @@ public class AssinanteActivity extends AppCompatActivity {
                 //Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
 
 
-
-
-
                 if (read <= quantity)
                 {
                     read++;
@@ -427,6 +496,26 @@ public class AssinanteActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_assinante, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.action_call){
+
+
+                    int permissionCheck = ActivityCompat.checkSelfPermission(AssinanteActivity.this, android.Manifest.permission.CALL_PHONE);
+                    if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(AssinanteActivity.this,new String[]{android.Manifest.permission.CALL_PHONE},225);
+                    }
+            AssinanteActivity.this.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + txtTelefone)));
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

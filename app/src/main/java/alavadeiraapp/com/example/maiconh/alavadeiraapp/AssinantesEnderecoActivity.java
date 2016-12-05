@@ -1,33 +1,16 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
-import android.*;
-import android.Manifest;
-import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.app.Activity;
-import android.util.TypedValue;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.app.ActionBar;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -40,7 +23,6 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
@@ -55,12 +37,18 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
     private TextView textoEndereco;
     private static final String ARQUIVO_PREFERENCIA = "ArquivoPreferencia";
     private ImageView ligar;
+    private String enderecoWaze;
+
+
+
     ExpandableListView expandableListView;
     List<String> status;
-    Map<String, List<String>> assinantes;
+    Map<String, List<Customer>> assinantes;
     ExpandableListAdapter listAdapter;
-    List<String> concluidos = new ArrayList<>();
-    List<String> pendentes = new ArrayList<>();
+    //List<String> concluidos = new ArrayList<>();
+    //List<String> pendentes = new ArrayList<>();
+    List<Customer> concluidos = new ArrayList<>();
+    List<Customer> pendentes = new ArrayList<>();
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -79,13 +67,19 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(0);
 
 
-        textoEndereco = (TextView) findViewById(R.id.txtEndereco);
-        Intent intent = getIntent();
-        String rua = intent.getStringExtra("rua");
-        String numero = intent.getStringExtra("numero");
-        String key = intent.getStringExtra("key");
-        textoEndereco.setText(rua + ", "+ numero);
+        textoEndereco = (TextView) findViewById(R.id.txtObservacao);
+        //Intent intent = getIntent();
+        //String rua = intent.getStringExtra("rua");
+        //String numero = intent.getStringExtra("numero");
+        //final String key = intent.getStringExtra("key");
 
+        Intent i = getIntent();
+        final Address address = (Address) i.getSerializableExtra("objeto");
+
+
+        textoEndereco.setText(address.getStreet() + ", "+ address.getNumber());
+
+        enderecoWaze = address.getNumber() + " " + address.getStreet()+ "," + address.getCity()+ ","+ address.getState();
 
 
 
@@ -94,22 +88,63 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
 
 
-        System.out.println("CHAVE: " + key);
 
-        Query enderecosQuery = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(key).child("customer");
+        Query enderecosQuery = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(address.getKey()).child("customer");
 
         enderecosQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                Customer customer = new Customer();
                 System.out.println(dataSnapshot);
-                String nome = (String) dataSnapshot.child("name").getValue();
-                pendentes.add(nome);
+                String name = (String) dataSnapshot.child("name").getValue();
+                String complement = (String) dataSnapshot.child("complement").getValue();
+                String phone = (String) dataSnapshot.child("phone").getValue();
+                String delivery_notes = (String) dataSnapshot.child("delivery_notes").getValue();
+                boolean status = (boolean) dataSnapshot.child("status") .getValue();
+
+
+
+                customer.setKey(dataSnapshot.getKey());
+                customer.setName(name);
+                customer.setComplement(complement);
+                customer.setDelivery_notes(delivery_notes);
+                customer.setPhone(phone);
+                customer.setStatus(status);
+
+                if (customer.isStatus() == true){
+                    concluidos.add(customer);
+                }else{
+                    pendentes.add(customer);
+                }
+
 
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Customer customer = new Customer();
+                System.out.println(dataSnapshot);
+                String name = (String) dataSnapshot.child("name").getValue();
+                String complement = (String) dataSnapshot.child("complement").getValue();
+                String phone = (String) dataSnapshot.child("phone").getValue();
+                String delivery_notes = (String) dataSnapshot.child("delivery_notes").getValue();
+                boolean status = (boolean) dataSnapshot.child("status") .getValue();
 
+
+
+                customer.setKey(dataSnapshot.getKey());
+                customer.setName(name);
+                customer.setComplement(complement);
+                customer.setDelivery_notes(delivery_notes);
+                customer.setPhone(phone);
+                customer.setStatus(status);
+
+                if (customer.isStatus() == true){
+                    concluidos.add(customer);
+                }else{
+                    pendentes.add(customer);
+                }
             }
 
             @Override
@@ -135,7 +170,6 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
         listAdapter = new Assinantes_Adapter(this,status,assinantes);
         expandableListView.setAdapter(listAdapter);
 
-
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -143,17 +177,19 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(AssinantesEnderecoActivity.this, AssinanteActivity.class);
 
-                final String selected = (String) listAdapter.getChild(
-                        groupPosition, childPosition);
-                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-                        .show();
-                intent.putExtra("assinante",selected);
+
+                Customer selected = (Customer) listAdapter.getChild(groupPosition, childPosition);
+                intent.putExtra("objeto", selected);
+                intent.putExtra("keyAddress", address.getKey());
                 startActivity(intent);
-                return false;
+                return true;
             }
         });
 
+
     }
+
+
 
 
 
@@ -162,13 +198,14 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
 
         try {
 
-            Double lat = -23.5631141;
-            Double log = -46.6565807;
+            //Double lat = -23.5631141;
+            //Double log = -46.6565807;
 
-            String url = String.format(Locale.ENGLISH, "geo:%f,%s" , lat, log);  //?ll=-23,5391558,-46,6504872/";
-
-            Intent intent = new Intent (Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
+            //String url = String.format(Locale.ENGLISH, "geo:%f,%s" , lat, log);  //?ll=-23,5391558,-46,6504872/";
+            Intent searchAddress = new  Intent(Intent.ACTION_VIEW,Uri.parse("geo:0,0?q="+ enderecoWaze));
+            startActivity(searchAddress);
+            //Intent intent = new Intent (Intent.ACTION_VIEW, Uri.parse(url));
+            //startActivity(intent);
 
         } catch (ActivityNotFoundException ex) {
             Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
@@ -180,24 +217,18 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
 
 
     public void fillData(){
+
+
         status = new ArrayList<>();
         assinantes = new HashMap<>();
 
         status.add("EM FILA");
         status.add("CONCLUIDOS");
 
-
-
-
-        //concluidos.add("Mayza Melo");
-        //concluidos.add("Anderson Baugarter");
-
-        //pendentes.add("Edmilson Laranjo");
-        //pendentes.add("Luiz Gonçalves");
-
-
         assinantes.put(status.get(0),pendentes);
         assinantes.put(status.get(1),concluidos);
+
+
 
     }
 }

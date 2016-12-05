@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">alavadeiraApp</string>
+    <string name="app_name">aLavadeira</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
 
     <!-- Nomes das telas -->
     <string name="entregas">MINHAS ENTREGAS</string>
-    <string name="assinantesEnd">ASSINANTES ENDEREÇO</string>
+    <string name="assinantesEnd">ASSINANTES </string>
     <string name="notificacoes">NOTIFICAÇOES</string>
 
 

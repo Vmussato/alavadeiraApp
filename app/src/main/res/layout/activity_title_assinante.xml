@@ -7,7 +7,7 @@
         android:text="EM FILA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtTitle"
+        android:id="@+id/txtTitleAssinantes"
         android:textSize="@dimen/title_listView"
         android:paddingLeft="30dp"
         android:paddingTop="15dp"

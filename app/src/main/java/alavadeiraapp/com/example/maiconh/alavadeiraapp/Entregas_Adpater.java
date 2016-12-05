@@ -88,11 +88,6 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
 
         TextView txtTitle = (TextView) convertView.findViewById(R.id.txt_Title);
         txtTitle.setText(status);
-
-
-
-
-
         return convertView;
     }
 

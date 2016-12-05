@@ -14,25 +14,29 @@
         android:paddingLeft="30dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:background="#f6f6f6"
+        android:background="@android:color/transparent"
         android:textColor="#333333"
         android:paddingRight="15dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/btnligar"
-        android:layout_toStartOf="@+id/btnligar" />
+        android:layout_toStartOf="@+id/btnLigar" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="57dp"
-        app:srcCompat="@drawable/ic_call_black_24dp_black"
-        android:id="@+id/btnligar"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_alignParentTop="true"
+    <Button
+        android:id="@+id/btnLigar"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_gravity="right"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:background="@drawable/ic_call_black_24dp_black"
+        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:layout_alignBaseline="@+id/txtAssinanteEmFila"
+        android:layout_alignBottom="@+id/txtAssinanteEmFila"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp" />
+
+
 </RelativeLayout>

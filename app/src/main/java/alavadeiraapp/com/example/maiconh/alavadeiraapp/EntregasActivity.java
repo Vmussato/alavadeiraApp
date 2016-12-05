@@ -335,15 +335,12 @@ public class EntregasActivity extends AppCompatActivity
                 Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
 
                 Address selected = (Address) listAdapter.getChild(groupPosition, childPosition);
-                Toast.makeText(getBaseContext(), selected.getStreet().toString(), Toast.LENGTH_LONG)
-                        .show();
 
+                //intent.putExtra("rua", selected.getStreet());
+                //intent.putExtra("numero", selected.getNumber().toString());
 
-
-                intent.putExtra("rua", selected.getStreet());
-                intent.putExtra("numero", selected.getNumber().toString());
-
-                    intent.putExtra("key", selected.getKey());
+                //intent.putExtra("key", selected.getKey());
+                intent.putExtra("objeto", selected);
 
                 startActivity(intent);
                 return true;

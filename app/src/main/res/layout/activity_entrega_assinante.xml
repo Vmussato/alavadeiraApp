@@ -35,7 +35,7 @@
             android:text="Apartamento 12 A"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView2"
+            android:id="@+id/txtComplemento"
             android:layout_below="@+id/txtTempoEstimado"
             android:layout_alignLeft="@+id/txtTempoEstimado"
             android:layout_alignStart="@+id/txtTempoEstimado"
@@ -46,9 +46,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView3"
-            android:layout_below="@+id/textView2"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_alignStart="@+id/textView2"
+            android:layout_below="@+id/txtComplemento"
+            android:layout_alignLeft="@+id/txtComplemento"
+            android:layout_alignStart="@+id/txtComplemento"
             android:layout_alignRight="@+id/txtTempoEstimado"
             android:layout_alignEnd="@+id/txtTempoEstimado" />
 
@@ -57,7 +57,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent" android:layout_height="wrap_content"
-            android:layout_below="@+id/txtEndereco">
+            android:layout_below="@+id/txtObservacao">
 
             <Button
                 android:id ="@+id/btnReagendar"
@@ -93,12 +93,12 @@
         <TextView
             android:text="Deixar as roupas no apartamento 12A"
             android:layout_height="wrap_content"
-            android:id="@+id/txtEndereco"
+            android:id="@+id/txtObservacao"
             android:layout_width="350dp"
             android:textColor="@android:color/background_light"
             android:layout_below="@+id/textView3"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignLeft="@+id/textView3"
+            android:layout_alignStart="@+id/textView3" />
         <!-- Botoes REAGENDAR E FINALIZAR -->
 
 

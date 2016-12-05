@@ -1,12 +1,13 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp.Models;
 
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Created by maiconh on 12/11/16.
  */
 
-public class Address {
+public class Address  implements Serializable{
     private String street;
     private Long number;
     private String neighborhood;
