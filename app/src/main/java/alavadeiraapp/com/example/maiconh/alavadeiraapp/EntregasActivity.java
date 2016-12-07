@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,6 +61,13 @@ public class EntregasActivity extends AppCompatActivity
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
+    private FirebaseAuth firebaseAuth;
+    String motoristaLogado;
+    private String car_plate = "";
+    private String name = "";
+    private TextView carplate;
+    private TextView nameMotorista;
+
 
     private static final String ARQUIVO_PREFERENCIA = "ArquivoPreferencia";
 
@@ -92,8 +100,29 @@ public class EntregasActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        carplate = (TextView) findViewById(R.id.textView11);
+        nameMotorista = (TextView) findViewById(R.id.textView13);
+
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+
+        if( getIntent().getExtras() != null){
+            Bundle bundle = getIntent().getExtras();
+
+            if( bundle.containsKey("usuario")){
+                motoristaLogado = bundle.getString("usuario");
+
+            }
+        }
+
 
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar3);
@@ -103,9 +132,10 @@ public class EntregasActivity extends AppCompatActivity
 
 
 
-/*
-        SharedPreferences sharedPreferences1 = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
-        DatabaseReference customerReference = myRef.child("visits").child(sharedPreferences1.getString("key","chave"));
+
+        //SharedPreferences sharedPreferences1 = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+        //haredPreferences1.getString("key","");
+        /*DatabaseReference customerReference = myRef.child("visits").child(sharedPreferences1.getString("key","chave"));
         DatabaseReference newCustomer = customerReference.child("address").child("-KXISSjp3FVNoAi97Z4a").child("customer").push();
 
         Customer customer = new Customer();
@@ -156,45 +186,7 @@ public class EntregasActivity extends AppCompatActivity
 
 
 
-        Query query = myRef.child("driver").orderByChild("email").equalTo("motorista@motorista.com");
 
-
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                String key = (dataSnapshot.getKey());
-                editor.putString("key", key);
-                editor.commit();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                String key = (dataSnapshot.getKey());
-                editor.putString("key", key);
-                editor.commit();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
 
 
 
@@ -432,6 +424,7 @@ public class EntregasActivity extends AppCompatActivity
 
 
         } else if (id == R.id.logout) {
+            firebaseAuth.signOut();
             startActivity(new Intent(EntregasActivity.this,MainActivity.class));
         }
 

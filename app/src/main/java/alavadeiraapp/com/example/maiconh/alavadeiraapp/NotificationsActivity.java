@@ -60,12 +60,19 @@ public class NotificationsActivity extends AppCompatActivity {
                 text1.setText(model.getTitle());
                 text2.setTextColor(Color.GRAY);
 
+
                 String textoTarefa = model.getText();
-                if (textoTarefa.length() > 70){
-                    text2.setText(textoTarefa.substring(0,70) + "...");
+
+                if (textoTarefa.trim().length() == 0){
+
                 }else{
-                    text2.setText(textoTarefa);
+                    if (textoTarefa.length() > 70){
+                        text2.setText(textoTarefa.substring(0,70) + "...");
+                    }else{
+                        text2.setText(textoTarefa);
+                    }
                 }
+
 
 
 

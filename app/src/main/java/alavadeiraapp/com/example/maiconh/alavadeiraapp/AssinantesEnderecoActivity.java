@@ -39,7 +39,7 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
     private ImageView ligar;
     private String enderecoWaze;
 
-
+    private Address address;
 
     ExpandableListView expandableListView;
     List<String> status;
@@ -74,7 +74,17 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
         //final String key = intent.getStringExtra("key");
 
         Intent i = getIntent();
-        final Address address = (Address) i.getSerializableExtra("objeto");
+        if( getIntent().getExtras() != null){
+            Bundle bundle = getIntent().getExtras();
+
+            if( bundle.containsKey("objeto")){
+                address = (Address) i.getSerializableExtra("objeto");
+
+            }
+        }
+
+
+       address = (Address) i.getSerializableExtra("objeto");
 
 
         textoEndereco.setText(address.getStreet() + ", "+ address.getNumber());
