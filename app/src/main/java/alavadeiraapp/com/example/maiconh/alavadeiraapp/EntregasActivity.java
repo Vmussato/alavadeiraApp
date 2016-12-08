@@ -3,6 +3,7 @@ package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -16,6 +17,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -33,6 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -41,19 +53,20 @@ import org.codehaus.jackson.map.ObjectWriter;
 import org.codehaus.jackson.util.DefaultPrettyPrinter;
 
 import org.w3c.dom.Text;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Deliverables;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Visits;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.MapsJson;
 
 public class EntregasActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -67,6 +80,7 @@ public class EntregasActivity extends AppCompatActivity
     private String name = "";
     private TextView carplate;
     private TextView nameMotorista;
+    public static TextView tempoChegada;
 
 
     private static final String ARQUIVO_PREFERENCIA = "ArquivoPreferencia";
@@ -108,7 +122,7 @@ public class EntregasActivity extends AppCompatActivity
         carplate = (TextView) findViewById(R.id.textView11);
         nameMotorista = (TextView) findViewById(R.id.textView13);
 
-
+        tempoChegada = (TextView) findViewById(R.id.tempoChegada);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -220,6 +234,8 @@ public class EntregasActivity extends AppCompatActivity
                for (DataSnapshot customers : dataSnapshot.child("customer").getChildren()){
                    //Passo valor do objeto do firebase para objeto customer do java
                    customer = customers.getValue(Customer.class);
+
+                   System.out.println(customer);
                    // Jogo dentro do array (pois pode ter varios clientes)
                    arrayClientes.add(customer);
                }
@@ -241,6 +257,7 @@ public class EntregasActivity extends AppCompatActivity
                }
 
                AtualizaProgressBar();
+               //CalcularTempo();
 
 
            }
@@ -351,6 +368,15 @@ public class EntregasActivity extends AppCompatActivity
         txtProgress.setText(concluidos.size()+ "/" + quantidadeEntregas );
     }
 
+    public void CalcularTempo(){
+
+        String orig =  "Rua domingos santi 22 jardim veloso";
+        String cheg ="Avenida rebouças 1645";
+        new JSONTask().execute("http://maps.googleapis.com/maps/api/directions/json?origin="+ orig +"-&destination="+cheg);
+
+
+    }
+
     public void fillData(){
         status = new ArrayList<>();
         entregas = new HashMap<>();
@@ -432,4 +458,77 @@ public class EntregasActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+
+
+}
+
+//classe para fazer o teste de conexão entre Json e Android
+class JSONTask extends AsyncTask<String,String,MapsJson>{
+
+
+
+    @Override
+    protected MapsJson doInBackground(String... urls) {
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
+
+        // Install the all-trusting trust manager
+
+
+        try{
+
+            URL url = new URL(urls[0]);
+
+            connection = (HttpURLConnection) url.openConnection();
+            connection.connect();
+            InputStream stream = connection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(stream));
+            StringBuffer buffer = new StringBuffer();
+            String line = "";
+
+            while((line = reader.readLine()) != null){
+
+                buffer.append(line);
+
+            }
+            String finaljson = buffer.toString();
+
+            Gson gson = new Gson();
+            MapsJson obj = gson.fromJson(finaljson, MapsJson.class);
+
+
+            return obj;
+
+        }catch(MalformedURLException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(connection != null) {
+                connection.disconnect();
+            }
+            try {
+                if(reader != null) {
+
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
+    //Funcoes que colocam as informações no TextView
+    protected void onPostExecute(MapsJson result) {
+        super.onPostExecute(result);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@22"+ result.getDuration());
+        EntregasActivity.tempoChegada.setText(result.getDuration());
+    }
+
+
 }

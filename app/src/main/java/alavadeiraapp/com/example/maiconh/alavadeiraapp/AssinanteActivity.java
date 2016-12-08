@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -51,6 +52,7 @@ public class AssinanteActivity extends AppCompatActivity {
     private TextView txtQuantidadeOutros;
     private TextView txtQuantidadeColetada;
     private TextView btnFinalizar;
+    private TextView btnReagendar;
 
     private TextView txtComplemento;
     private TextView txtObsevacao;
@@ -67,7 +69,7 @@ public class AssinanteActivity extends AppCompatActivity {
     String key;
     private int qtdSacolasLidas;
     private List<String> barcodeSacolas = new ArrayList<>();
-
+    Address address;
 
     private int coletar;
 
@@ -90,7 +92,7 @@ public class AssinanteActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         final Customer customer = (Customer) i.getSerializableExtra("objeto");
-         String keyAddress = i.getStringExtra("keyAddress");
+         address = (Address) i.getSerializableExtra("address");
 
 
 
@@ -118,6 +120,7 @@ public class AssinanteActivity extends AppCompatActivity {
 
         btnFinalizar = (Button) findViewById(R.id.btnFinalizar);
 
+
         btnFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +133,38 @@ public class AssinanteActivity extends AppCompatActivity {
                     builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
+                            SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+                            DatabaseReference assinanteStatus = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(address.getKey()).child("customer").child(customer.getKey());
+                            DatabaseReference clientes = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(address.getKey()).child("customer");
+                            final DatabaseReference endereco = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(address.getKey());
+                            assinanteStatus.child("status").setValue(true);
+
+
+                            Query query = clientes.orderByChild("status").equalTo(false);
+
+                           query.addValueEventListener(new ValueEventListener() {
+                               @Override
+                               public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                   if (dataSnapshot.getValue() != null){
+
+                                   }else{
+                                       endereco.child("status").setValue(true);
+                                   }
+                               }
+
+                               @Override
+                               public void onCancelled(DatabaseError databaseError) {
+
+                               }
+                           });
+
+
+
+
+                            Intent intent = new Intent(AssinanteActivity.this, AssinantesEnderecoActivity.class);
+                            intent.putExtra("objeto", address);
+                            startActivity(intent);
                             dialog.dismiss();
                         }
                     });
@@ -164,17 +199,50 @@ public class AssinanteActivity extends AppCompatActivity {
             }
         });
 
+
+        btnReagendar = (TextView) findViewById(R.id.btnReagendar);
+
+        btnReagendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AssinanteActivity.this);
+                builder.setTitle("Reagendar entrega?");
+                builder.setMessage("Tem certeza que deseja reagendar a entrega? Ao clicar em OK o status do cliente ira mudar para finalizado.");
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+                        DatabaseReference assinanteStatus = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(address.getKey()).child("customer").child(customer.getKey());
+                        assinanteStatus.child("status").setValue(true);
+
+                        dialog.dismiss();
+
+                        Intent intent = new Intent(AssinanteActivity.this, AssinantesEnderecoActivity.class);
+                        intent.putExtra("objeto", address);
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //TODO
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
         SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
 
-        final Query itens = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(keyAddress).child("customer").child(customer.getKey()).child("deliverables");
-        final Query itenColetados = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(keyAddress).child("customer").child(customer.getKey()).child("colectables");
+        final Query itens = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(address.getKey()).child("customer").child(customer.getKey()).child("deliverables");
+        final Query itenColetados = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(address.getKey()).child("customer").child(customer.getKey()).child("colectables");
 
        itenColetados.addChildEventListener(new ChildEventListener() {
            @Override
            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                String barcode = dataSnapshot.child("barcode").getValue(String.class);
                 totalItemColetado++;
-
                txtQuantidadeColetada.setText(String.valueOf(totalItemColetado));
            }
 
@@ -401,7 +469,6 @@ public class AssinanteActivity extends AppCompatActivity {
 
 
     }
-
 
 
 

@@ -183,8 +183,8 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
                 txtAssinanante1Concluido.setText(customenOne);
                     txtAssinanante2Concluido.setVisibility(View.INVISIBLE);
                 }else if (count >= 2){
-
-                txtAssinanante2Concluido.setText("Concluido2");
+                    txtAssinanante1Concluido.setText(customenOne);
+                txtAssinanante2Concluido.setText(customerTwo);
                     if (count > 2){
                         maisAssinantesConcluidos.setText("+"+String.valueOf(count - 2)+" assinantes");
                         maisAssinantesConcluidos.setVisibility(View.VISIBLE);

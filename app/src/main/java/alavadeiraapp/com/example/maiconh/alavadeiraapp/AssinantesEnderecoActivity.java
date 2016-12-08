@@ -3,6 +3,8 @@ package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.icu.text.DateFormat;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -19,8 +22,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +45,8 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
     private static final String ARQUIVO_PREFERENCIA = "ArquivoPreferencia";
     private ImageView ligar;
     private String enderecoWaze;
+
+    private Button marcarChegada;
 
     private Address address;
 
@@ -83,6 +92,27 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
             }
         }
 
+        marcarChegada = (Button) findViewById(R.id.btnMarcarChegada);
+
+
+
+        marcarChegada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                marcarChegada.setText("CHEGADA MARCADA");
+
+                Calendar c = Calendar.getInstance();
+
+                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                String formattedDate = df.format(c.getTime());
+
+                SharedPreferences sharedPreferences1 = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+                 DatabaseReference enderecosQuery1 = myRef.child("visits").child(sharedPreferences1.getString("key","chave")).child("address").child(address.getKey()).child("chegada");
+
+                enderecosQuery1.child("chegada").setValue(formattedDate);
+            }
+        });
+
 
        address = (Address) i.getSerializableExtra("objeto");
 
@@ -90,8 +120,6 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
         textoEndereco.setText(address.getStreet() + ", "+ address.getNumber());
 
         enderecoWaze = address.getNumber() + " " + address.getStreet()+ "," + address.getCity()+ ","+ address.getState();
-
-
 
 
 
@@ -190,11 +218,16 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
 
                 Customer selected = (Customer) listAdapter.getChild(groupPosition, childPosition);
                 intent.putExtra("objeto", selected);
-                intent.putExtra("keyAddress", address.getKey());
+                intent.putExtra("address", address);
                 startActivity(intent);
                 return true;
             }
         });
+
+
+
+
+
 
 
     }
@@ -223,6 +256,14 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void checkStatus(){
+        if (pendentes.size() == 0 ){
+            SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+            DatabaseReference enderecosQuery = myRef.child("visits").child(sharedPreferences.getString("key","chave")).child("address").child(address.getKey());
+            enderecosQuery.child("status").setValue(true);
+        }
     }
 
 
