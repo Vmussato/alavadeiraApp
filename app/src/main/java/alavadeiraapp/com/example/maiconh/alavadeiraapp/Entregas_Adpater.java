@@ -1,6 +1,7 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -22,20 +24,26 @@ import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
  * Created by maiconh on 11/11/16.
  */
 
+
+
+
 public class Entregas_Adpater extends BaseExpandableListAdapter {
 
     Activity context;
     List<String> status;
     Map<String, List<Address>> entregas;
+    String tempo;
+
     
     
 
 
-    public Entregas_Adpater(Activity context, List<String> status, Map<String, List<Address>> entregas){
+    public Entregas_Adpater(Activity context, List<String> status, Map<String, List<Address>> entregas, String tempo){
 
         this.context = context;
         this.status = status;
         this.entregas = entregas;
+        this.tempo = tempo;
 
     }
 
@@ -97,7 +105,6 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
         Address entregas = (Address) getChild(groupPosition,childPosition);
 
 
-
         LayoutInflater inflater = context.getLayoutInflater();
 
         Integer childType = new Integer(groupPosition);
@@ -148,6 +155,7 @@ public class Entregas_Adpater extends BaseExpandableListAdapter {
 
 
                 if (childPosition == 0){
+                    tempoChegada.setText(tempo);
                     tempoChegada.setVisibility(View.VISIBLE);
                 }
                 txtMaisAssinantes.setVisibility(View.INVISIBLE);

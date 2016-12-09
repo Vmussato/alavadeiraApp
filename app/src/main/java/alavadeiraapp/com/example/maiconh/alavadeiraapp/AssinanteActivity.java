@@ -87,7 +87,7 @@ public class AssinanteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrega_assinante);
         getSupportActionBar().setElevation(0);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 
         Intent i = getIntent();
@@ -142,22 +142,22 @@ public class AssinanteActivity extends AppCompatActivity {
 
                             Query query = clientes.orderByChild("status").equalTo(false);
 
-                           query.addValueEventListener(new ValueEventListener() {
-                               @Override
-                               public void onDataChange(DataSnapshot dataSnapshot) {
+                            query.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                   if (dataSnapshot.getValue() != null){
+                                    if (dataSnapshot.getValue() != null){
 
-                                   }else{
-                                       endereco.child("status").setValue(true);
-                                   }
-                               }
+                                    }else{
+                                        endereco.child("status").setValue(true);
+                                    }
+                                }
 
-                               @Override
-                               public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                               }
-                           });
+                                }
+                            });
 
 
 
@@ -585,4 +585,8 @@ public class AssinanteActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

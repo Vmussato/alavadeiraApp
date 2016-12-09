@@ -1,12 +1,9 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,16 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-
-import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -41,32 +28,29 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
-import org.codehaus.jackson.util.DefaultPrettyPrinter;
-
-import org.w3c.dom.Text;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Deliverables;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Visits;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.JSONTask;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.KeyValue;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.Leg;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.MapsJson;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.Route;
+
 
 public class EntregasActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -81,6 +65,13 @@ public class EntregasActivity extends AppCompatActivity
     private TextView carplate;
     private TextView nameMotorista;
     public static TextView tempoChegada;
+    public String tempo = "";
+    public String enderecoDestino = "";
+
+
+    private static TextView rotaEntregas;
+
+
 
 
     private static final String ARQUIVO_PREFERENCIA = "ArquivoPreferencia";
@@ -94,6 +85,11 @@ public class EntregasActivity extends AppCompatActivity
     List<Address> concluidos = new ArrayList<>();
     List<Address> pendentes = new ArrayList<>();
     List<String> chaveEndereco = new ArrayList<>();
+
+
+    public String orig = "AlamedaBaraodeLimeira,539,SaoPaulo";
+    public String cheg = "Cotia";
+
 
 
     ProgressBar progressBar;
@@ -114,6 +110,8 @@ public class EntregasActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        rotaEntregas = (TextView) findViewById(R.id.rotaEntregas);
+        tempoChegada = (TextView) findViewById(R.id.tempoChegada);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -122,7 +120,8 @@ public class EntregasActivity extends AppCompatActivity
         carplate = (TextView) findViewById(R.id.textView11);
         nameMotorista = (TextView) findViewById(R.id.textView13);
 
-        tempoChegada = (TextView) findViewById(R.id.tempoChegada);
+
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -144,28 +143,27 @@ public class EntregasActivity extends AppCompatActivity
 
 
 
+/*
 
-
-
-        //SharedPreferences sharedPreferences1 = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
-        //haredPreferences1.getString("key","");
-        /*DatabaseReference customerReference = myRef.child("visits").child(sharedPreferences1.getString("key","chave"));
-        DatabaseReference newCustomer = customerReference.child("address").child("-KXISSjp3FVNoAi97Z4a").child("customer").push();
+        //sharedPreferences sharedPreferences1 = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+        sharedPreferences.getString("key","");
+        DatabaseReference customerReference = myRef.child("visits").child(sharedPreferences.getString("key","chave"));
+        DatabaseReference newCustomer = customerReference.child("address").child("-KYVGcVB5BNRqrTQhoVZ").child("customer").push();
 
         Customer customer = new Customer();
 
 
-        customer.setId(125);
-        customer.setName("Cliente 5");
-        customer.setPhone("21545121");
-        customer.setDelivery_notes("fdsfsfdsfs");
-        customer.setComplement("fdsfsfds");
+        customer.setId((long) 234);
+        customer.setName("Chico Souza");
+        customer.setPhone("64444441");
+        customer.setDelivery_notes("Sem anotaçao");
+        customer.setComplement("Apt 4442");
 
 
 
         newCustomer.setValue(customer);
-
 */
+
 
         /*
         Gravando um motorista no banco
@@ -175,20 +173,20 @@ public class EntregasActivity extends AppCompatActivity
         novoDriver.setValue(new Driver("Motorista","123","motorista@motorista.com","ABC-1313"));
         */
 
-        /*
+/*
         Address address = new Address();
-        address.setCep("02139030");
+        address.setCep("02139234");
         address.setCity("Sao Paulo");
         address.setLatitude("-43.4324329");
         address.setLongitude("-26.213128");
-        address.setNeighborhood("Vila Sabrina");
-        address.setNumber(395);
+        address.setNeighborhood("Pinheiros");
+        address.setNumber((long) 800);
         address.setState("SP");
-        address.setStreet("Av Orlando Jardim");
+        address.setStreet("Rua Cardeal Arcoverde");
         address.setCustomer(null);
 
 
-     SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
+        sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
 
         System.out.println("TESTE: " + sharedPreferences.getString("key","chave"));
         DatabaseReference visitsRerefence = myRef.child("visits").child(sharedPreferences.getString("key","chave"));
@@ -196,9 +194,8 @@ public class EntregasActivity extends AppCompatActivity
         DatabaseReference address1 = visitsRerefence.child("address").push();
 
         address1.setValue(address);
-        */
 
-
+*/
 
 
 
@@ -210,7 +207,7 @@ public class EntregasActivity extends AppCompatActivity
            @Override
            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-
+                int cont = 0;
 
                //Intancia para Classe Endereço e Cliente
                Address address = new Address();
@@ -257,7 +254,9 @@ public class EntregasActivity extends AppCompatActivity
                }
 
                AtualizaProgressBar();
-               //CalcularTempo();
+
+                          CalculaTempo();
+
 
 
            }
@@ -308,6 +307,8 @@ public class EntregasActivity extends AppCompatActivity
                }
 
                AtualizaProgressBar();
+               //new JSONTask().execute("https://maps.googleapis.com/maps/api/directions/json?origin="+orig+"-&destination="+address.getStreet());
+
            }
 
            @Override
@@ -329,36 +330,37 @@ public class EntregasActivity extends AppCompatActivity
 
 
 
-        expandableListView = (ExpandableListView) findViewById(R.id.idExpandableListView);
-        fillData();
-        listAdapter = new Entregas_Adpater(this,status,entregas);
-        expandableListView.setAdapter(listAdapter);
 
+        setupAdapter();
+         // SELECIONA ITEM CLICADO E CHAMA TELA DE ASSINANTES DE ENDEREÇO
+            expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
+                    Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
 
-        // SELECIONA ITEM CLICADO E CHAMA TELA DE ASSINANTES DE ENDEREÇO
-      expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                    Address selected = (Address) listAdapter.getChild(groupPosition, childPosition);
 
-                Intent intent = new Intent(EntregasActivity.this, AssinantesEnderecoActivity.class);
+                    //intent.putExtra("rua", selected.getStreet());
+                    //intent.putExtra("numero", selected.getNumber().toString());
 
-                Address selected = (Address) listAdapter.getChild(groupPosition, childPosition);
+                    //intent.putExtra("key", selected.getKey());
+                    intent.putExtra("tempo",tempo);
+                    intent.putExtra("objeto", selected);
 
-                //intent.putExtra("rua", selected.getStreet());
-                //intent.putExtra("numero", selected.getNumber().toString());
-
-                //intent.putExtra("key", selected.getKey());
-                intent.putExtra("objeto", selected);
-
-                startActivity(intent);
-                return true;
-            }
-        });
-
+                    startActivity(intent);
+                    return true;
+                }
+            });
 
     }
 
+    public void setupAdapter(){
+        expandableListView = (ExpandableListView) findViewById(R.id.idExpandableListView);
+        fillData();
+        listAdapter = new Entregas_Adpater(this,status,entregas,tempo);
+        expandableListView.setAdapter(listAdapter);
+    }
 
     public void AtualizaProgressBar(){
         Integer quantidadeEntregas = concluidos.size() + pendentes.size();
@@ -368,14 +370,7 @@ public class EntregasActivity extends AppCompatActivity
         txtProgress.setText(concluidos.size()+ "/" + quantidadeEntregas );
     }
 
-    public void CalcularTempo(){
 
-        String orig =  "Rua domingos santi 22 jardim veloso";
-        String cheg ="Avenida rebouças 1645";
-        new JSONTask().execute("http://maps.googleapis.com/maps/api/directions/json?origin="+ orig +"-&destination="+cheg);
-
-
-    }
 
     public void fillData(){
         status = new ArrayList<>();
@@ -387,6 +382,14 @@ public class EntregasActivity extends AppCompatActivity
         entregas.put(status.get(0),pendentes);
         entregas.put(status.get(1),concluidos);
 
+    }
+
+    private void CalculaTempo(){
+
+        JSONTask jsonTask = new JSONTask();
+         jsonTask.execute("https://maps.googleapis.com/maps/api/directions/json?origin="+orig+"-&destination=RuaLagoaPanema,SaoPaulo&key=AIzaSyCV4o1L5oHxdbK8ebOlRTGXjxkb8GUzRw8");
+        tempo = jsonTask.getDuracao();
+        setupAdapter();
     }
 
 
@@ -461,74 +464,12 @@ public class EntregasActivity extends AppCompatActivity
 
 
 
-
-
 }
 
-//classe para fazer o teste de conexão entre Json e Android
-class JSONTask extends AsyncTask<String,String,MapsJson>{
 
 
 
-    @Override
-    protected MapsJson doInBackground(String... urls) {
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
-
-        // Install the all-trusting trust manager
 
 
-        try{
-
-            URL url = new URL(urls[0]);
-
-            connection = (HttpURLConnection) url.openConnection();
-            connection.connect();
-            InputStream stream = connection.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(stream));
-            StringBuffer buffer = new StringBuffer();
-            String line = "";
-
-            while((line = reader.readLine()) != null){
-
-                buffer.append(line);
-
-            }
-            String finaljson = buffer.toString();
-
-            Gson gson = new Gson();
-            MapsJson obj = gson.fromJson(finaljson, MapsJson.class);
 
 
-            return obj;
-
-        }catch(MalformedURLException e){
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if(connection != null) {
-                connection.disconnect();
-            }
-            try {
-                if(reader != null) {
-
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-
-    //Funcoes que colocam as informações no TextView
-    protected void onPostExecute(MapsJson result) {
-        super.onPostExecute(result);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@22"+ result.getDuration());
-        EntregasActivity.tempoChegada.setText(result.getDuration());
-    }
-
-
-}

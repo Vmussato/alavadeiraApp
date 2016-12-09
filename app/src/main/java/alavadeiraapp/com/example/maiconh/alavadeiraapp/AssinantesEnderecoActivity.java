@@ -45,6 +45,8 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
     private static final String ARQUIVO_PREFERENCIA = "ArquivoPreferencia";
     private ImageView ligar;
     private String enderecoWaze;
+    private String tempo;
+    private TextView txtTempoEstimado;
 
     private Button marcarChegada;
 
@@ -77,6 +79,7 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
 
 
         textoEndereco = (TextView) findViewById(R.id.txtObservacao);
+        txtTempoEstimado = (TextView) findViewById(R.id.txtTempoEstimado);
         //Intent intent = getIntent();
         //String rua = intent.getStringExtra("rua");
         //String numero = intent.getStringExtra("numero");
@@ -88,13 +91,14 @@ public class AssinantesEnderecoActivity extends AppCompatActivity {
 
             if( bundle.containsKey("objeto")){
                 address = (Address) i.getSerializableExtra("objeto");
+                tempo = i.getStringExtra("tempo");
 
             }
         }
 
         marcarChegada = (Button) findViewById(R.id.btnMarcarChegada);
 
-
+        txtTempoEstimado.setText(tempo);
 
         marcarChegada.setOnClickListener(new View.OnClickListener() {
             @Override

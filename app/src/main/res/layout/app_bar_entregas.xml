@@ -37,7 +37,7 @@
                 android:id="@+id/progressBar3"
                 android:max="6"
                 android:minWidth="150dp"
-                android:progress="1"
+                android:progress="0"
                 android:progressTint="#FF7143"
                 android:progressBackgroundTint="#808366"
                 android:minHeight="10dip"
