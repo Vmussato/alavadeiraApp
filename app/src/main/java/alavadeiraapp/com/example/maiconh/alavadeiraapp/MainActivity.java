@@ -1,32 +1,27 @@
 package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
-import java.sql.SQLOutput;
+import java.net.HttpURLConnection;
+
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.model.User;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.api.ApiManager;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.api.model.UserLogin;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.preferences.PreferencesALavadeira;
+import alavadeiraapp.com.example.maiconh.alavadeiraapp.utils.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,13 +29,18 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private EditText login;
     private EditText senha;
-    private String chave;
-    private String placa;
-    private String name;
+//    private String chave;
+//    private String placa;
+//    private String name;
     private static final String ARQUIVO_PREFERENCIA = "ArquivoPreferencia";
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference();
+//    FirebaseDatabase database = FirebaseDatabase.getInstance();
+//    DatabaseReference myRef = database.getReference();
+
+    private ApiManager apiManager;
+    private PreferencesALavadeira preferencesALavadeira;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
         logar = (Button) findViewById(R.id.btnLogarId);
 
+        // TODO remover
+        login.setText("appteste@alavadeira.com");
+        senha.setText("123123teste");
 
+        /*
         if (firebaseAuth.getCurrentUser() != null){
             Intent intent = new Intent(MainActivity.this, EntregasActivity.class);
 
@@ -66,12 +70,80 @@ public class MainActivity extends AppCompatActivity {
         }else{
 
         }
+        */
+
+        apiManager = new ApiManager();
+        progressDialog = new ProgressDialog(this);
+        preferencesALavadeira = new PreferencesALavadeira(MainActivity.this);
+
+        if (preferencesALavadeira.isLogged()){
+            startActivity(new Intent(MainActivity.this, EntregasActivity.class));
+            finish();
+        }
+
+
+        logar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (login.getText().toString().trim().length() != 0 && senha.getText().toString().trim().length() != 0) {
+                    Utils.showProgressDialog(progressDialog, true);
+
+                    UserLogin userLogin = new UserLogin();
+                    userLogin.setEmail(login.getText().toString());
+                    userLogin.setPassword(senha.getText().toString());
+
+                    apiManager.getLoginApi().login(userLogin).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            Utils.showProgressDialog(progressDialog, false);
+
+                            if (response.code() == HttpURLConnection.HTTP_OK){
+                                preferencesALavadeira.setLogged(true);
+                                preferencesALavadeira.setToken(response.body().getData().getToken());
+
+                                Intent intent = new Intent(MainActivity.this, EntregasActivity.class);
+//                                SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
+
+//                                intent.putExtra("usuario", login.getText().toString());
+//                                intent.putExtra("car_plate", response.body(). );
+//                                intent.putExtra("name",name);
+//                                intent.putExtra("keyMotorista", sharedPreferences.getString("key","chave"));
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Utils.showMessage(MainActivity.this, getString(R.string.app_name), "Não foi possível efetuar o login");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            Utils.showProgressDialog(progressDialog, false);
+
+                            Utils.showMessage(MainActivity.this, getString(R.string.app_name), "Deu pau");
+                        }
+                    });
+                } else {
+                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(MainActivity.this);
+                    dlgAlert.setMessage("Usuario ou senha em branco, favor validar");
+                    dlgAlert.setTitle("Falha de autenticaçao");
+                    dlgAlert.setPositiveButton("OK", null);
+                    dlgAlert.setCancelable(true);
+                    dlgAlert.create().show();
+
+                    dlgAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                }
+            }
+        });
 
 
 
-
-
-
+/*
         logar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,5 +244,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        */
     }
 }

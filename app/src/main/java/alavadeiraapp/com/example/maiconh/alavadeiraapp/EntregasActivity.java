@@ -2,10 +2,7 @@ package alavadeiraapp.com.example.maiconh.alavadeiraapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MenuInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,43 +10,24 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Address;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.Models.Customer;
 import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.JSONTask;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.KeyValue;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.Leg;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.MapsJson;
-import alavadeiraapp.com.example.maiconh.alavadeiraapp.mapeamento.Route;
 
 
 public class EntregasActivity extends AppCompatActivity
@@ -122,7 +100,7 @@ public class EntregasActivity extends AppCompatActivity
 
 
 
-
+        /*
         firebaseAuth = FirebaseAuth.getInstance();
 
         SharedPreferences sharedPreferences = getSharedPreferences(ARQUIVO_PREFERENCIA,0);
@@ -162,7 +140,7 @@ public class EntregasActivity extends AppCompatActivity
 
 
         newCustomer.setValue(customer);
-*/
+
 
 
         /*
@@ -195,7 +173,7 @@ public class EntregasActivity extends AppCompatActivity
 
         address1.setValue(address);
 
-*/
+
 
 
 
@@ -352,7 +330,7 @@ public class EntregasActivity extends AppCompatActivity
                     return true;
                 }
             });
-
+    */
     }
 
     public void setupAdapter(){
